@@ -1,0 +1,342 @@
+CellProfiler Pipeline: http://www.cellprofiler.org
+Version:5
+DateRevision:421
+GitHash:
+ModuleCount:26
+HasImagePlaneDetails:False
+
+Images:[module_num:1|svn_version:'Unknown'|variable_revision_number:2|show_window:False|notes:['To begin creating your project, use the Images module to compile a list of files and/or folders that you want to analyze. You can also specify a set of rules to include only the desired files in your selected folders.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    :
+    Filter images?:Images only
+    Select the rule criteria:and (extension does isimage) (directory doesnot containregexp "[\\\\/]\\.")
+
+Metadata:[module_num:2|svn_version:'Unknown'|variable_revision_number:6|show_window:False|notes:['The Metadata module optionally allows you to extract information describing your images (i.e, metadata) which will be stored along with your measurements. This information can be contained in the file name and/or location, or in an external file.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Extract metadata?:Yes
+    Metadata data type:Text
+    Metadata types:{}
+    Extraction method count:1
+    Metadata extraction method:Extract from file/folder names
+    Metadata source:File name
+    Regular expression to extract from file name:(?P<Well>[A-P][0-9]{1,2})_Ch(?P<ChannelNumber>[0-9])
+    Regular expression to extract from folder name:(?P<Date>[0-9]{4}_[0-9]{2}_[0-9]{2})$
+    Extract metadata from:All images
+    Select the filtering criteria:and (file does contain "")
+    Metadata file location:Elsewhere...|
+    Match file and image metadata:[]
+    Use case insensitive matching?:No
+    Metadata file name:None
+    Does cached metadata exist?:Yes
+
+NamesAndTypes:[module_num:3|svn_version:'Unknown'|variable_revision_number:8|show_window:False|notes:['The NamesAndTypes module allows you to assign a meaningful name to each image by which other modules will refer to it.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Assign a name to:Images matching rules
+    Select the image type:Grayscale image
+    Name to assign these images:DNA
+    Match metadata:[]
+    Image set matching method:Order
+    Set intensity range from:Image metadata
+    Assignments count:1
+    Single images count:0
+    Maximum intensity:255.0
+    Process as 3D?:No
+    Relative pixel spacing in X:1.0
+    Relative pixel spacing in Y:1.0
+    Relative pixel spacing in Z:1.0
+    Select the rule criteria:and (file does contain "Ch1")
+    Name to assign these images:DNA
+    Name to assign these objects:Cell
+    Select the image type:Grayscale image
+    Set intensity range from:Image metadata
+    Maximum intensity:255.0
+
+Groups:[module_num:4|svn_version:'Unknown'|variable_revision_number:2|show_window:False|notes:['The Groups module optionally allows you to split your list of images into image subsets (groups) which will be processed independently of each other. Examples of groupings include screening batches, microtiter plates, time-lapse movies, etc.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Do you want to group your images?:No
+    grouping metadata count:1
+    Metadata category:None
+
+Crop:[module_num:5|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:DNA
+    Name the output image:CropBlue
+    Select the cropping shape:Rectangle
+    Select the cropping method:Coordinates
+    Apply which cycle's cropping pattern?:Every
+    Left and right rectangle positions:2000,-2000
+    Top and bottom rectangle positions:2000,-2000
+    Coordinates of ellipse center:500,500
+    Ellipse radius, X direction:400
+    Ellipse radius, Y direction:200
+    Remove empty rows and columns?:All
+    Select the masking image:None
+    Select the image with a cropping mask:None
+    Select the objects:None
+
+RescaleIntensity:[module_num:6|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:CropBlue
+    Name the output image:RescaleIntensity
+    Rescaling method:Stretch each image to use the full intensity range
+    Method to calculate the minimum intensity:Custom
+    Method to calculate the maximum intensity:Custom
+    Lower intensity limit for the input image:0.0
+    Upper intensity limit for the input image:1.0
+    Intensity range for the input image:0.0,1.0
+    Intensity range for the output image:0.0,1.0
+    Select image to match in maximum intensity:None
+    Divisor value:1.0
+    Divisor measurement:None
+
+GaussianFilter:[module_num:7|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:CropBlue
+    Name the output image:GaussianFilter
+    Sigma:355
+
+CorrectIlluminationApply:[module_num:8|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:CropBlue
+    Name the output image:CorrBlue
+    Select the illumination function:GaussianFilter
+    Select how the illumination function is applied:Subtract
+    Set output image values less than 0 equal to 0?:Yes
+    Set output image values greater than 1 equal to 1?:Yes
+
+RescaleIntensity:[module_num:9|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:CorrBlue
+    Name the output image:RescaleIntensity2
+    Rescaling method:Stretch each image to use the full intensity range
+    Method to calculate the minimum intensity:Custom
+    Method to calculate the maximum intensity:Custom
+    Lower intensity limit for the input image:0.0
+    Upper intensity limit for the input image:1.0
+    Intensity range for the input image:0.0,1.0
+    Intensity range for the output image:0.0,1.0
+    Select image to match in maximum intensity:None
+    Divisor value:1.0
+    Divisor measurement:None
+
+GaussianFilter:[module_num:10|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:RescaleIntensity2
+    Name the output image:GaussianFilter2
+    Sigma:20
+
+IdentifyPrimaryObjects:[module_num:11|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:GaussianFilter2
+    Name the primary objects to be identified:IdentifyPrimaryObjects
+    Typical diameter of objects, in pixel units (Min,Max):70,500
+    Discard objects outside the diameter range?:Yes
+    Discard objects touching the border of the image?:Yes
+    Method to distinguish clumped objects:None
+    Method to draw dividing lines between clumped objects:Shape
+    Size of smoothing filter:10
+    Suppress local maxima that are closer than this minimum allowed distance:120
+    Speed up by using lower-resolution image to find local maxima?:Yes
+    Fill holes in identified objects?:Never
+    Automatically calculate size of smoothing filter for declumping?:Yes
+    Automatically calculate minimum allowed distance between local maxima?:No
+    Handling of objects if excessive number of objects identified:Continue
+    Maximum number of objects:500
+    Use advanced settings?:Yes
+    Threshold setting version:12
+    Threshold strategy:Global
+    Thresholding method:Minimum Cross-Entropy
+    Threshold smoothing scale:0
+    Threshold correction factor:1
+    Lower and upper bounds on threshold:.062,1
+    Manual threshold:.08
+    Select the measurement to threshold with:None
+    Two-class or three-class thresholding?:Two classes
+    Log transform before thresholding?:Yes
+    Assign pixels in the middle intensity class to the foreground or the background?:Background
+    Size of adaptive window:20
+    Lower outlier fraction:0.05
+    Upper outlier fraction:0.05
+    Averaging method:Mode
+    Variance method:Standard deviation
+    # of deviations:2.0
+    Thresholding method:Minimum Cross-Entropy
+
+ConvertObjectsToImage:[module_num:12|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input objects:IdentifyPrimaryObjects
+    Name the output image:CellImage1
+    Select the color format:Color
+    Select the colormap:Default
+
+SaveImages:[module_num:13|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:CellImage1
+    Select method for constructing file names:From image filename
+    Select image name for file prefix:DNA
+    Enter single file name:OrigBlue
+    Number of digits:4
+    Append a suffix to the image file name?:Yes
+    Text to append to the image name:All
+    Saved file format:tiff
+    Output file location:Default Output Folder|
+    Image bit depth:8-bit integer
+    Overwrite existing files without warning?:No
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:No
+
+MeasureObjectSizeShape:[module_num:14|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select object sets to measure:IdentifyPrimaryObjects
+    Calculate the Zernike features?:No
+    Calculate the advanced features?:No
+
+FilterObjects:[module_num:15|svn_version:'Unknown'|variable_revision_number:9|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the objects to filter:IdentifyPrimaryObjects
+    Name the output objects:FilterObjects1
+    Select the filtering mode:Measurements
+    Select the filtering method:Limits
+    Select the objects that contain the filtered objects:None
+    Select the location of the rules or classifier file:Elsewhere...|
+    Rules or classifier file name:rules.txt
+    Class number:1
+    Measurement count:1
+    Additional object count:0
+    Assign overlapping child to:Both parents
+    Keep removed objects as a seperate set?:No
+    Name the objects removed by the filter:RemovedObjects
+    Select the measurement to filter by:AreaShape_Eccentricity
+    Filter using a minimum measurement value?:No
+    Minimum value:.6
+    Filter using a maximum measurement value?:Yes
+    Maximum value:.9
+
+MeasureObjectIntensity:[module_num:16|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:CorrBlue, CropBlue
+    Select objects to measure:FilterObjects1
+
+FilterObjects:[module_num:17|svn_version:'Unknown'|variable_revision_number:9|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the objects to filter:FilterObjects1
+    Name the output objects:FilterObjects2
+    Select the filtering mode:Measurements
+    Select the filtering method:Limits
+    Select the objects that contain the filtered objects:None
+    Select the location of the rules or classifier file:Elsewhere...|
+    Rules or classifier file name:rules.txt
+    Class number:1
+    Measurement count:1
+    Additional object count:0
+    Assign overlapping child to:Both parents
+    Keep removed objects as a seperate set?:No
+    Name the objects removed by the filter:RemovedObjects
+    Select the measurement to filter by:Intensity_MeanIntensity_CropBlue
+    Filter using a minimum measurement value?:Yes
+    Minimum value:.04
+    Filter using a maximum measurement value?:Yes
+    Maximum value:1.0
+
+ConvertObjectsToImage:[module_num:18|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input objects:FilterObjects2
+    Name the output image:CellImage2
+    Select the color format:Color
+    Select the colormap:Default
+
+SaveImages:[module_num:19|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:CellImage2
+    Select method for constructing file names:From image filename
+    Select image name for file prefix:DNA
+    Enter single file name:OrigBlue
+    Number of digits:4
+    Append a suffix to the image file name?:Yes
+    Text to append to the image name:F2
+    Saved file format:tiff
+    Output file location:Default Output Folder|
+    Image bit depth:8-bit integer
+    Overwrite existing files without warning?:No
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+MeasureObjectSizeShape:[module_num:20|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select object sets to measure:FilterObjects2
+    Calculate the Zernike features?:No
+    Calculate the advanced features?:No
+
+MeasureObjectIntensity:[module_num:21|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:CorrBlue, CropBlue
+    Select objects to measure:FilterObjects2
+
+MaskImage:[module_num:22|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:CropBlue
+    Name the output image:MaskBlue
+    Use objects or an image as a mask?:Objects
+    Select object for mask:FilterObjects2
+    Select image for mask:None
+    Invert the mask?:No
+
+MaskImage:[module_num:23|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:CorrBlue
+    Name the output image:MaskBlueCorr
+    Use objects or an image as a mask?:Objects
+    Select object for mask:FilterObjects2
+    Select image for mask:None
+    Invert the mask?:No
+
+SaveImages:[module_num:24|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:MaskBlue
+    Select method for constructing file names:From image filename
+    Select image name for file prefix:DNA
+    Enter single file name:OrigBlue
+    Number of digits:4
+    Append a suffix to the image file name?:Yes
+    Text to append to the image name:MASK
+    Saved file format:tiff
+    Output file location:Default Output Folder|
+    Image bit depth:8-bit integer
+    Overwrite existing files without warning?:No
+    When to save:Every cycle
+    Record the file and path information to the saved image?:Yes
+    Create subfolders in the output folder?:No
+    Base image folder:Default Output Folder|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+SaveImages:[module_num:25|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:MaskBlueCorr
+    Select method for constructing file names:From image filename
+    Select image name for file prefix:DNA
+    Enter single file name:OrigBlue
+    Number of digits:4
+    Append a suffix to the image file name?:Yes
+    Text to append to the image name:MASKCORR
+    Saved file format:tiff
+    Output file location:Default Output Folder|
+    Image bit depth:8-bit integer
+    Overwrite existing files without warning?:No
+    When to save:Every cycle
+    Record the file and path information to the saved image?:Yes
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+ExportToSpreadsheet:[module_num:26|svn_version:'Unknown'|variable_revision_number:13|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the column delimiter:Comma (",")
+    Add image metadata columns to your object data file?:Yes
+    Add image file and folder names to your object data file?:Yes
+    Select the measurements to export:Yes
+    Calculate the per-image mean values for object measurements?:Yes
+    Calculate the per-image median values for object measurements?:Yes
+    Calculate the per-image standard deviation values for object measurements?:Yes
+    Output file location:Default Output Folder|
+    Create a GenePattern GCT file?:No
+    Select source of sample row name:Metadata
+    Select the image to use as the identifier:None
+    Select the metadata to use as the identifier:None
+    Export all measurement types?:Yes
+    Press button to select measurements:IdentifyPrimaryObjects|AreaShape_MaxFeretDiameter,IdentifyPrimaryObjects|AreaShape_MinFeretDiameter,IdentifyPrimaryObjects|AreaShape_Extent,IdentifyPrimaryObjects|AreaShape_Center_Y,IdentifyPrimaryObjects|AreaShape_Center_X,IdentifyPrimaryObjects|AreaShape_BoundingBoxMaximum_X,IdentifyPrimaryObjects|AreaShape_BoundingBoxMaximum_Y,IdentifyPrimaryObjects|AreaShape_Solidity,IdentifyPrimaryObjects|AreaShape_Orientation,IdentifyPrimaryObjects|AreaShape_Perimeter,IdentifyPrimaryObjects|AreaShape_MajorAxisLength,IdentifyPrimaryObjects|AreaShape_MedianRadius,IdentifyPrimaryObjects|AreaShape_Compactness,IdentifyPrimaryObjects|AreaShape_EulerNumber,IdentifyPrimaryObjects|AreaShape_BoundingBoxArea,IdentifyPrimaryObjects|AreaShape_BoundingBoxMinimum_X,IdentifyPrimaryObjects|AreaShape_BoundingBoxMinimum_Y,IdentifyPrimaryObjects|AreaShape_EquivalentDiameter,IdentifyPrimaryObjects|AreaShape_ConvexArea,IdentifyPrimaryObjects|AreaShape_Eccentricity,IdentifyPrimaryObjects|AreaShape_FormFactor,IdentifyPrimaryObjects|AreaShape_Area,IdentifyPrimaryObjects|AreaShape_MinorAxisLength,IdentifyPrimaryObjects|AreaShape_MaximumRadius,IdentifyPrimaryObjects|AreaShape_MeanRadius,IdentifyPrimaryObjects|Children_FilterObjects1_Count,IdentifyPrimaryObjects|Location_Center_X,IdentifyPrimaryObjects|Location_Center_Z,IdentifyPrimaryObjects|Location_Center_Y,IdentifyPrimaryObjects|Number_Object_Number,Image|Metadata_FileLocation,Image|Metadata_Series,Image|Metadata_Well,Image|Metadata_ChannelNumber,Image|Metadata_Frame,Image|Count_FilterObjects1,Image|Count_IdentifyPrimaryObjects,Image|Count_FilterObjects2,Image|Group_Number,Image|Group_Index,Image|MD5Digest_DNA,Image|ModuleError_10GaussianFilter,Image|ModuleError_06RescaleIntensity,Image|ModuleError_24SaveImages,Image|ModuleError_02Metadata,Image|ModuleError_07GaussianFilter,Image|ModuleError_16MeasureObjectIntensity,Image|ModuleError_22MaskImage,Image|ModuleError_17FilterObjects,Image|ModuleError_04Groups,Image|ModuleError_15FilterObjects,Image|ModuleError_09RescaleIntensity,Image|ModuleError_23MaskImage,Image|ModuleError_08CorrectIlluminationApply,Image|ModuleError_25SaveImages,Image|ModuleError_12ConvertObjectsToImage,Image|ModuleError_03NamesAndTypes,Image|ModuleError_20MeasureObjectSizeShape,Image|ModuleError_19SaveImages,Image|ModuleError_14MeasureObjectSizeShape,Image|ModuleError_01Images,Image|ModuleError_13SaveImages,Image|ModuleError_18ConvertObjectsToImage,Image|ModuleError_11IdentifyPrimaryObjects,Image|ModuleError_05Crop,Image|ModuleError_21MeasureObjectIntensity,Image|Crop_AreaRetainedAfterCropping_CropBlue,Image|Crop_OriginalImageArea_CropBlue,Image|ExecutionTime_24SaveImages,Image|ExecutionTime_22MaskImage,Image|ExecutionTime_05Crop,Image|ExecutionTime_21MeasureObjectIntensity,Image|ExecutionTime_18ConvertObjectsToImage,Image|ExecutionTime_19SaveImages,Image|ExecutionTime_11IdentifyPrimaryObjects,Image|ExecutionTime_17FilterObjects,Image|ExecutionTime_04Groups,Image|ExecutionTime_12ConvertObjectsToImage,Image|ExecutionTime_14MeasureObjectSizeShape,Image|ExecutionTime_20MeasureObjectSizeShape,Image|ExecutionTime_09RescaleIntensity,Image|ExecutionTime_16MeasureObjectIntensity,Image|ExecutionTime_07GaussianFilter,Image|ExecutionTime_25SaveImages,Image|ExecutionTime_13SaveImages,Image|ExecutionTime_10GaussianFilter,Image|ExecutionTime_15FilterObjects,Image|ExecutionTime_01Images,Image|ExecutionTime_23MaskImage,Image|ExecutionTime_03NamesAndTypes,Image|ExecutionTime_08CorrectIlluminationApply,Image|ExecutionTime_02Metadata,Image|ExecutionTime_06RescaleIntensity,Image|Scaling_DNA,Image|FileName_MaskBlue,Image|FileName_DNA,Image|FileName_MaskBlueCorr,Image|Threshold_OrigThreshold_IdentifyPrimaryObjects,Image|Threshold_FinalThreshold_IdentifyPrimaryObjects,Image|Threshold_WeightedVariance_IdentifyPrimaryObjects,Image|Threshold_SumOfEntropies_IdentifyPrimaryObjects,Image|Series_DNA,Image|URL_DNA,Image|Height_DNA,Image|Width_DNA,Image|PathName_MaskBlue,Image|PathName_DNA,Image|PathName_MaskBlueCorr,Image|Frame_DNA,FilterObjects1|Location_MaxIntensity_X_CropBlue,FilterObjects1|Location_MaxIntensity_X_CorrBlue,FilterObjects1|Location_MaxIntensity_Y_CropBlue,FilterObjects1|Location_MaxIntensity_Y_CorrBlue,FilterObjects1|Location_MaxIntensity_Z_CropBlue,FilterObjects1|Location_MaxIntensity_Z_CorrBlue,FilterObjects1|Location_Center_Z,FilterObjects1|Location_Center_X,FilterObjects1|Location_Center_Y,FilterObjects1|Location_CenterMassIntensity_X_CropBlue,FilterObjects1|Location_CenterMassIntensity_X_CorrBlue,FilterObjects1|Location_CenterMassIntensity_Z_CropBlue,FilterObjects1|Location_CenterMassIntensity_Z_CorrBlue,FilterObjects1|Location_CenterMassIntensity_Y_CropBlue,FilterObjects1|Location_CenterMassIntensity_Y_CorrBlue,FilterObjects1|Intensity_MeanIntensityEdge_CropBlue,FilterObjects1|Intensity_MeanIntensityEdge_CorrBlue,FilterObjects1|Intensity_IntegratedIntensity_CorrBlue,FilterObjects1|Intensity_IntegratedIntensity_CropBlue,FilterObjects1|Intensity_MedianIntensity_CropBlue,FilterObjects1|Intensity_MedianIntensity_CorrBlue,FilterObjects1|Intensity_UpperQuartileIntensity_CropBlue,FilterObjects1|Intensity_UpperQuartileIntensity_CorrBlue,FilterObjects1|Intensity_MinIntensity_CorrBlue,FilterObjects1|Intensity_MinIntensity_CropBlue,FilterObjects1|Intensity_StdIntensityEdge_CorrBlue,FilterObjects1|Intensity_StdIntensityEdge_CropBlue,FilterObjects1|Intensity_StdIntensity_CorrBlue,FilterObjects1|Intensity_StdIntensity_CropBlue,FilterObjects1|Intensity_MADIntensity_CropBlue,FilterObjects1|Intensity_MADIntensity_CorrBlue,FilterObjects1|Intensity_MeanIntensity_CropBlue,FilterObjects1|Intensity_MeanIntensity_CorrBlue,FilterObjects1|Intensity_MinIntensityEdge_CorrBlue,FilterObjects1|Intensity_MinIntensityEdge_CropBlue,FilterObjects1|Intensity_MassDisplacement_CorrBlue,FilterObjects1|Intensity_MassDisplacement_CropBlue,FilterObjects1|Intensity_MaxIntensityEdge_CropBlue,FilterObjects1|Intensity_MaxIntensityEdge_CorrBlue,FilterObjects1|Intensity_IntegratedIntensityEdge_CorrBlue,FilterObjects1|Intensity_IntegratedIntensityEdge_CropBlue,FilterObjects1|Intensity_LowerQuartileIntensity_CorrBlue,FilterObjects1|Intensity_LowerQuartileIntensity_CropBlue,FilterObjects1|Intensity_MaxIntensity_CropBlue,FilterObjects1|Intensity_MaxIntensity_CorrBlue,FilterObjects1|Children_FilterObjects2_Count,FilterObjects1|Parent_IdentifyPrimaryObjects,FilterObjects1|Number_Object_Number,FilterObjects2|Intensity_MeanIntensityEdge_CorrBlue,FilterObjects2|Intensity_MeanIntensityEdge_CropBlue,FilterObjects2|Intensity_MaxIntensityEdge_CropBlue,FilterObjects2|Intensity_MaxIntensityEdge_CorrBlue,FilterObjects2|Intensity_MinIntensity_CropBlue,FilterObjects2|Intensity_MinIntensity_CorrBlue,FilterObjects2|Intensity_IntegratedIntensity_CorrBlue,FilterObjects2|Intensity_IntegratedIntensity_CropBlue,FilterObjects2|Intensity_MADIntensity_CropBlue,FilterObjects2|Intensity_MADIntensity_CorrBlue,FilterObjects2|Intensity_StdIntensityEdge_CropBlue,FilterObjects2|Intensity_StdIntensityEdge_CorrBlue,FilterObjects2|Intensity_MinIntensityEdge_CorrBlue,FilterObjects2|Intensity_MinIntensityEdge_CropBlue,FilterObjects2|Intensity_MedianIntensity_CropBlue,FilterObjects2|Intensity_MedianIntensity_CorrBlue,FilterObjects2|Intensity_UpperQuartileIntensity_CorrBlue,FilterObjects2|Intensity_UpperQuartileIntensity_CropBlue,FilterObjects2|Intensity_LowerQuartileIntensity_CorrBlue,FilterObjects2|Intensity_LowerQuartileIntensity_CropBlue,FilterObjects2|Intensity_IntegratedIntensityEdge_CorrBlue,FilterObjects2|Intensity_IntegratedIntensityEdge_CropBlue,FilterObjects2|Intensity_StdIntensity_CorrBlue,FilterObjects2|Intensity_StdIntensity_CropBlue,FilterObjects2|Intensity_MeanIntensity_CropBlue,FilterObjects2|Intensity_MeanIntensity_CorrBlue,FilterObjects2|Intensity_MaxIntensity_CorrBlue,FilterObjects2|Intensity_MaxIntensity_CropBlue,FilterObjects2|Intensity_MassDisplacement_CropBlue,FilterObjects2|Intensity_MassDisplacement_CorrBlue,FilterObjects2|Location_CenterMassIntensity_X_CropBlue,FilterObjects2|Location_CenterMassIntensity_X_CorrBlue,FilterObjects2|Location_CenterMassIntensity_Y_CropBlue,FilterObjects2|Location_CenterMassIntensity_Y_CorrBlue,FilterObjects2|Location_CenterMassIntensity_Z_CropBlue,FilterObjects2|Location_CenterMassIntensity_Z_CorrBlue,FilterObjects2|Location_MaxIntensity_Y_CropBlue,FilterObjects2|Location_MaxIntensity_Y_CorrBlue,FilterObjects2|Location_MaxIntensity_Z_CropBlue,FilterObjects2|Location_MaxIntensity_Z_CorrBlue,FilterObjects2|Location_MaxIntensity_X_CorrBlue,FilterObjects2|Location_MaxIntensity_X_CropBlue,FilterObjects2|Location_Center_X,FilterObjects2|Location_Center_Z,FilterObjects2|Location_Center_Y,FilterObjects2|AreaShape_EquivalentDiameter,FilterObjects2|AreaShape_EulerNumber,FilterObjects2|AreaShape_FormFactor,FilterObjects2|AreaShape_MinFeretDiameter,FilterObjects2|AreaShape_BoundingBoxArea,FilterObjects2|AreaShape_BoundingBoxMinimum_Y,FilterObjects2|AreaShape_BoundingBoxMinimum_X,FilterObjects2|AreaShape_Extent,FilterObjects2|AreaShape_Center_Y,FilterObjects2|AreaShape_Center_X,FilterObjects2|AreaShape_Area,FilterObjects2|AreaShape_MedianRadius,FilterObjects2|AreaShape_ConvexArea,FilterObjects2|AreaShape_Compactness,FilterObjects2|AreaShape_Orientation,FilterObjects2|AreaShape_BoundingBoxMaximum_X,FilterObjects2|AreaShape_BoundingBoxMaximum_Y,FilterObjects2|AreaShape_Solidity,FilterObjects2|AreaShape_MaximumRadius,FilterObjects2|AreaShape_MaxFeretDiameter,FilterObjects2|AreaShape_MeanRadius,FilterObjects2|AreaShape_Perimeter,FilterObjects2|AreaShape_MinorAxisLength,FilterObjects2|AreaShape_MajorAxisLength,FilterObjects2|AreaShape_Eccentricity,FilterObjects2|Number_Object_Number,FilterObjects2|Parent_FilterObjects1,Experiment|Pipeline_Pipeline,Experiment|CellProfiler_Version,Experiment|Run_Timestamp,Experiment|Modification_Timestamp
+    Representation of Nan/Inf:NaN
+    Add a prefix to file names?:Yes
+    Filename prefix:MyExpt_
+    Overwrite existing files without warning?:No
+    Data to export:Do not use
+    Combine these object measurements with those of the previous object?:No
+    File name:DATA.csv
+    Use the object name for the file name?:Yes

@@ -1,0 +1,247 @@
+CellProfiler Pipeline: http://www.cellprofiler.org
+Version:5
+DateRevision:421
+GitHash:
+ModuleCount:17
+HasImagePlaneDetails:False
+
+Images:[module_num:1|svn_version:'Unknown'|variable_revision_number:2|show_window:False|notes:['To begin creating your project, use the Images module to compile a list of files and/or folders that you want to analyze. You can also specify a set of rules to include only the desired files in your selected folders.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    :
+    Filter images?:Images only
+    Select the rule criteria:and (extension does isimage) (directory doesnot containregexp "[\\\\/]\\.")
+
+Metadata:[module_num:2|svn_version:'Unknown'|variable_revision_number:6|show_window:False|notes:['The Metadata module optionally allows you to extract information describing your images (i.e, metadata) which will be stored along with your measurements. This information can be contained in the file name and/or location, or in an external file.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Extract metadata?:No
+    Metadata data type:Text
+    Metadata types:{}
+    Extraction method count:1
+    Metadata extraction method:Extract from file/folder names
+    Metadata source:File name
+    Regular expression to extract from file name:^(?P<Plate>.*)_(?P<Well>[A-P][0-9]{2})_s(?P<Site>[0-9])_w(?P<ChannelNumber>[0-9])
+    Regular expression to extract from folder name:(?P<Date>[0-9]{4}_[0-9]{2}_[0-9]{2})$
+    Extract metadata from:All images
+    Select the filtering criteria:and (file does contain "")
+    Metadata file location:Elsewhere...|
+    Match file and image metadata:[]
+    Use case insensitive matching?:No
+    Metadata file name:None
+    Does cached metadata exist?:No
+
+NamesAndTypes:[module_num:3|svn_version:'Unknown'|variable_revision_number:8|show_window:False|notes:['The NamesAndTypes module allows you to assign a meaningful name to each image by which other modules will refer to it.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Assign a name to:Images matching rules
+    Select the image type:Grayscale image
+    Name to assign these images:DNA
+    Match metadata:[]
+    Image set matching method:Order
+    Set intensity range from:Image metadata
+    Assignments count:2
+    Single images count:0
+    Maximum intensity:255.0
+    Process as 3D?:No
+    Relative pixel spacing in X:1.0
+    Relative pixel spacing in Y:1.0
+    Relative pixel spacing in Z:1.0
+    Select the rule criteria:and (file does contain "RFP")
+    Name to assign these images:Dead
+    Name to assign these objects:Cell
+    Select the image type:Grayscale image
+    Set intensity range from:Image metadata
+    Maximum intensity:255.0
+    Select the rule criteria:and (file does contain "GFP")
+    Name to assign these images:Live
+    Name to assign these objects:Nucleus
+    Select the image type:Grayscale image
+    Set intensity range from:Image metadata
+    Maximum intensity:255.0
+
+Groups:[module_num:4|svn_version:'Unknown'|variable_revision_number:2|show_window:False|notes:['The Groups module optionally allows you to split your list of images into image subsets (groups) which will be processed independently of each other. Examples of groupings include screening batches, microtiter plates, time-lapse movies, etc.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Do you want to group your images?:No
+    grouping metadata count:1
+    Metadata category:None
+
+GaussianFilter:[module_num:5|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:Live
+    Name the output image:GaussianFilter
+    Sigma:1
+
+GaussianFilter:[module_num:6|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:Dead
+    Name the output image:GaussianFilterD
+    Sigma:1
+
+RescaleIntensity:[module_num:7|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:GaussianFilter
+    Name the output image:RescaleIntensity
+    Rescaling method:Divide each image by the same value
+    Method to calculate the minimum intensity:Custom
+    Method to calculate the maximum intensity:Custom
+    Lower intensity limit for the input image:0.0
+    Upper intensity limit for the input image:1.0
+    Intensity range for the input image:0.0,1.0
+    Intensity range for the output image:0.0,1.0
+    Select image to match in maximum intensity:None
+    Divisor value:.5
+    Divisor measurement:None
+
+IdentifyPrimaryObjects:[module_num:8|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:RescaleIntensity
+    Name the primary objects to be identified:IdentifyPrimaryObjectsLive
+    Typical diameter of objects, in pixel units (Min,Max):8,100
+    Discard objects outside the diameter range?:Yes
+    Discard objects touching the border of the image?:No
+    Method to distinguish clumped objects:Intensity
+    Method to draw dividing lines between clumped objects:Intensity
+    Size of smoothing filter:10
+    Suppress local maxima that are closer than this minimum allowed distance:7.0
+    Speed up by using lower-resolution image to find local maxima?:Yes
+    Fill holes in identified objects?:After both thresholding and declumping
+    Automatically calculate size of smoothing filter for declumping?:Yes
+    Automatically calculate minimum allowed distance between local maxima?:Yes
+    Handling of objects if excessive number of objects identified:Continue
+    Maximum number of objects:500
+    Use advanced settings?:Yes
+    Threshold setting version:12
+    Threshold strategy:Adaptive
+    Thresholding method:Minimum Cross-Entropy
+    Threshold smoothing scale:1.3488
+    Threshold correction factor:1.0
+    Lower and upper bounds on threshold:.07,1.0
+    Manual threshold:0.0
+    Select the measurement to threshold with:None
+    Two-class or three-class thresholding?:Two classes
+    Log transform before thresholding?:No
+    Assign pixels in the middle intensity class to the foreground or the background?:Foreground
+    Size of adaptive window:50
+    Lower outlier fraction:0.05
+    Upper outlier fraction:0.05
+    Averaging method:Mean
+    Variance method:Standard deviation
+    # of deviations:2.0
+    Thresholding method:Sauvola
+
+IdentifyPrimaryObjects:[module_num:9|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:GaussianFilterD
+    Name the primary objects to be identified:IdentifyPrimaryObjectsDead
+    Typical diameter of objects, in pixel units (Min,Max):5,100
+    Discard objects outside the diameter range?:Yes
+    Discard objects touching the border of the image?:No
+    Method to distinguish clumped objects:Intensity
+    Method to draw dividing lines between clumped objects:Intensity
+    Size of smoothing filter:10
+    Suppress local maxima that are closer than this minimum allowed distance:7.0
+    Speed up by using lower-resolution image to find local maxima?:Yes
+    Fill holes in identified objects?:After both thresholding and declumping
+    Automatically calculate size of smoothing filter for declumping?:Yes
+    Automatically calculate minimum allowed distance between local maxima?:Yes
+    Handling of objects if excessive number of objects identified:Continue
+    Maximum number of objects:500
+    Use advanced settings?:Yes
+    Threshold setting version:12
+    Threshold strategy:Adaptive
+    Thresholding method:Minimum Cross-Entropy
+    Threshold smoothing scale:1.3488
+    Threshold correction factor:1.0
+    Lower and upper bounds on threshold:.45,1.0
+    Manual threshold:0.0
+    Select the measurement to threshold with:None
+    Two-class or three-class thresholding?:Two classes
+    Log transform before thresholding?:No
+    Assign pixels in the middle intensity class to the foreground or the background?:Foreground
+    Size of adaptive window:50
+    Lower outlier fraction:0.05
+    Upper outlier fraction:0.05
+    Averaging method:Mean
+    Variance method:Standard deviation
+    # of deviations:2.0
+    Thresholding method:Sauvola
+
+CombineObjects:[module_num:10|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select initial object set:IdentifyPrimaryObjectsDead
+    Select object set to combine:IdentifyPrimaryObjectsLive
+    Select how to handle overlapping objects:Merge
+    Name the combined object set:CombinedObjectsTotal
+
+OverlayObjects:[module_num:11|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Input:Live
+    Name the output image:OverlayObjectsLive
+    Objects:IdentifyPrimaryObjectsLive
+    Opacity:0.3
+
+OverlayObjects:[module_num:12|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Input:Dead
+    Name the output image:OverlayObjectsDead
+    Objects:IdentifyPrimaryObjectsDead
+    Opacity:0.3
+
+SaveImages:[module_num:13|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:OverlayObjectsLive
+    Select method for constructing file names:From image filename
+    Select image name for file prefix:Live
+    Enter single file name:OrigBlue
+    Number of digits:4
+    Append a suffix to the image file name?:No
+    Text to append to the image name:
+    Saved file format:tiff
+    Output file location:Default Output Folder|
+    Image bit depth:8-bit integer
+    Overwrite existing files without warning?:No
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+SaveImages:[module_num:14|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:OverlayObjectsDead
+    Select method for constructing file names:From image filename
+    Select image name for file prefix:Dead
+    Enter single file name:OrigBlue
+    Number of digits:4
+    Append a suffix to the image file name?:No
+    Text to append to the image name:
+    Saved file format:tiff
+    Output file location:Default Output Folder|
+    Image bit depth:8-bit integer
+    Overwrite existing files without warning?:No
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+MeasureObjectSizeShape:[module_num:15|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select object sets to measure:CombinedObjectsTotal, IdentifyPrimaryObjectsDead, IdentifyPrimaryObjectsLive
+    Calculate the Zernike features?:No
+    Calculate the advanced features?:No
+
+MeasureObjectIntensity:[module_num:16|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:Dead, Live
+    Select objects to measure:CombinedObjectsTotal, IdentifyPrimaryObjectsDead, IdentifyPrimaryObjectsLive
+
+ExportToSpreadsheet:[module_num:17|svn_version:'Unknown'|variable_revision_number:13|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the column delimiter:Comma (",")
+    Add image metadata columns to your object data file?:Yes
+    Add image file and folder names to your object data file?:Yes
+    Select the measurements to export:Yes
+    Calculate the per-image mean values for object measurements?:Yes
+    Calculate the per-image median values for object measurements?:Yes
+    Calculate the per-image standard deviation values for object measurements?:Yes
+    Output file location:Default Output Folder|
+    Create a GenePattern GCT file?:No
+    Select source of sample row name:Metadata
+    Select the image to use as the identifier:None
+    Select the metadata to use as the identifier:None
+    Export all measurement types?:Yes
+    Press button to select measurements:IdentifyPrimaryObjectsLive|Intensity_UpperQuartileIntensity_Live,IdentifyPrimaryObjectsLive|Intensity_UpperQuartileIntensity_Dead,IdentifyPrimaryObjectsLive|Intensity_MeanIntensity_Dead,IdentifyPrimaryObjectsLive|Intensity_MeanIntensity_Live,IdentifyPrimaryObjectsLive|Intensity_StdIntensity_Live,IdentifyPrimaryObjectsLive|Intensity_StdIntensity_Dead,IdentifyPrimaryObjectsLive|Intensity_MinIntensityEdge_Live,IdentifyPrimaryObjectsLive|Intensity_MinIntensityEdge_Dead,IdentifyPrimaryObjectsLive|Intensity_MeanIntensityEdge_Dead,IdentifyPrimaryObjectsLive|Intensity_MeanIntensityEdge_Live,IdentifyPrimaryObjectsLive|Intensity_MaxIntensityEdge_Dead,IdentifyPrimaryObjectsLive|Intensity_MaxIntensityEdge_Live,IdentifyPrimaryObjectsLive|Intensity_IntegratedIntensityEdge_Live,IdentifyPrimaryObjectsLive|Intensity_IntegratedIntensityEdge_Dead,IdentifyPrimaryObjectsLive|Intensity_MaxIntensity_Dead,IdentifyPrimaryObjectsLive|Intensity_MaxIntensity_Live,IdentifyPrimaryObjectsLive|Intensity_MinIntensity_Live,IdentifyPrimaryObjectsLive|Intensity_MinIntensity_Dead,IdentifyPrimaryObjectsLive|Intensity_MADIntensity_Dead,IdentifyPrimaryObjectsLive|Intensity_MADIntensity_Live,IdentifyPrimaryObjectsLive|Intensity_LowerQuartileIntensity_Live,IdentifyPrimaryObjectsLive|Intensity_LowerQuartileIntensity_Dead,IdentifyPrimaryObjectsLive|Intensity_MassDisplacement_Dead,IdentifyPrimaryObjectsLive|Intensity_MassDisplacement_Live,IdentifyPrimaryObjectsLive|Intensity_IntegratedIntensity_Live,IdentifyPrimaryObjectsLive|Intensity_IntegratedIntensity_Dead,IdentifyPrimaryObjectsLive|Intensity_MedianIntensity_Dead,IdentifyPrimaryObjectsLive|Intensity_MedianIntensity_Live,IdentifyPrimaryObjectsLive|Intensity_StdIntensityEdge_Live,IdentifyPrimaryObjectsLive|Intensity_StdIntensityEdge_Dead,IdentifyPrimaryObjectsLive|AreaShape_BoundingBoxMinimum_X,IdentifyPrimaryObjectsLive|AreaShape_BoundingBoxMinimum_Y,IdentifyPrimaryObjectsLive|AreaShape_Orientation,IdentifyPrimaryObjectsLive|AreaShape_Eccentricity,IdentifyPrimaryObjectsLive|AreaShape_Solidity,IdentifyPrimaryObjectsLive|AreaShape_MinorAxisLength,IdentifyPrimaryObjectsLive|AreaShape_Center_Y,IdentifyPrimaryObjectsLive|AreaShape_Center_X,IdentifyPrimaryObjectsLive|AreaShape_Perimeter,IdentifyPrimaryObjectsLive|AreaShape_MeanRadius,IdentifyPrimaryObjectsLive|AreaShape_Area,IdentifyPrimaryObjectsLive|AreaShape_FormFactor,IdentifyPrimaryObjectsLive|AreaShape_MinFeretDiameter,IdentifyPrimaryObjectsLive|AreaShape_MaxFeretDiameter,IdentifyPrimaryObjectsLive|AreaShape_EulerNumber,IdentifyPrimaryObjectsLive|AreaShape_Extent,IdentifyPrimaryObjectsLive|AreaShape_MajorAxisLength,IdentifyPrimaryObjectsLive|AreaShape_MaximumRadius,IdentifyPrimaryObjectsLive|AreaShape_ConvexArea,IdentifyPrimaryObjectsLive|AreaShape_BoundingBoxMaximum_Y,IdentifyPrimaryObjectsLive|AreaShape_BoundingBoxMaximum_X,IdentifyPrimaryObjectsLive|AreaShape_EquivalentDiameter,IdentifyPrimaryObjectsLive|AreaShape_MedianRadius,IdentifyPrimaryObjectsLive|AreaShape_Compactness,IdentifyPrimaryObjectsLive|AreaShape_BoundingBoxArea,IdentifyPrimaryObjectsLive|Location_MaxIntensity_Y_Live,IdentifyPrimaryObjectsLive|Location_MaxIntensity_Y_Dead,IdentifyPrimaryObjectsLive|Location_MaxIntensity_Z_Dead,IdentifyPrimaryObjectsLive|Location_MaxIntensity_Z_Live,IdentifyPrimaryObjectsLive|Location_MaxIntensity_X_Live,IdentifyPrimaryObjectsLive|Location_MaxIntensity_X_Dead,IdentifyPrimaryObjectsLive|Location_CenterMassIntensity_X_Dead,IdentifyPrimaryObjectsLive|Location_CenterMassIntensity_X_Live,IdentifyPrimaryObjectsLive|Location_CenterMassIntensity_Y_Dead,IdentifyPrimaryObjectsLive|Location_CenterMassIntensity_Y_Live,IdentifyPrimaryObjectsLive|Location_CenterMassIntensity_Z_Dead,IdentifyPrimaryObjectsLive|Location_CenterMassIntensity_Z_Live,IdentifyPrimaryObjectsLive|Location_Center_Y,IdentifyPrimaryObjectsLive|Location_Center_X,IdentifyPrimaryObjectsLive|Location_Center_Z,IdentifyPrimaryObjectsLive|Number_Object_Number,Image|Frame_Dead,Image|Frame_Live,Image|ModuleError_15MeasureObjectSizeShape,Image|ModuleError_12OverlayObjects,Image|ModuleError_04Groups,Image|ModuleError_05GaussianFilter,Image|ModuleError_09IdentifyPrimaryObjects,Image|ModuleError_06GaussianFilter,Image|ModuleError_16MeasureObjectIntensity,Image|ModuleError_13SaveImages,Image|ModuleError_08IdentifyPrimaryObjects,Image|ModuleError_07RescaleIntensity,Image|ModuleError_03NamesAndTypes,Image|ModuleError_11OverlayObjects,Image|ModuleError_14SaveImages,Image|ModuleError_02Metadata,Image|ModuleError_10CombineObjects,Image|ModuleError_01Images,Image|Width_Live,Image|Width_Dead,Image|ExecutionTime_16MeasureObjectIntensity,Image|ExecutionTime_15MeasureObjectSizeShape,Image|ExecutionTime_02Metadata,Image|ExecutionTime_05GaussianFilter,Image|ExecutionTime_11OverlayObjects,Image|ExecutionTime_12OverlayObjects,Image|ExecutionTime_14SaveImages,Image|ExecutionTime_08IdentifyPrimaryObjects,Image|ExecutionTime_13SaveImages,Image|ExecutionTime_09IdentifyPrimaryObjects,Image|ExecutionTime_01Images,Image|ExecutionTime_10CombineObjects,Image|ExecutionTime_06GaussianFilter,Image|ExecutionTime_04Groups,Image|ExecutionTime_03NamesAndTypes,Image|ExecutionTime_07RescaleIntensity,Image|MD5Digest_Live,Image|MD5Digest_Dead,Image|Scaling_Dead,Image|Scaling_Live,Image|Threshold_FinalThreshold_IdentifyPrimaryObjectsLive,Image|Threshold_FinalThreshold_IdentifyPrimaryObjectsDead,Image|Threshold_SumOfEntropies_IdentifyPrimaryObjectsLive,Image|Threshold_SumOfEntropies_IdentifyPrimaryObjectsDead,Image|Threshold_WeightedVariance_IdentifyPrimaryObjectsDead,Image|Threshold_WeightedVariance_IdentifyPrimaryObjectsLive,Image|Threshold_OrigThreshold_IdentifyPrimaryObjectsLive,Image|Threshold_OrigThreshold_IdentifyPrimaryObjectsDead,Image|Threshold_GuideThreshold_IdentifyPrimaryObjectsDead,Image|Threshold_GuideThreshold_IdentifyPrimaryObjectsLive,Image|URL_Live,Image|URL_Dead,Image|Group_Number,Image|Group_Index,Image|Height_Dead,Image|Height_Live,Image|PathName_Dead,Image|PathName_Live,Image|Count_IdentifyPrimaryObjectsDead,Image|Count_CombinedObjectsTotal,Image|Count_IdentifyPrimaryObjectsLive,Image|Series_Dead,Image|Series_Live,Image|FileName_Dead,Image|FileName_Live,IdentifyPrimaryObjectsDead|Intensity_MassDisplacement_Live,IdentifyPrimaryObjectsDead|Intensity_MassDisplacement_Dead,IdentifyPrimaryObjectsDead|Intensity_UpperQuartileIntensity_Dead,IdentifyPrimaryObjectsDead|Intensity_UpperQuartileIntensity_Live,IdentifyPrimaryObjectsDead|Intensity_MinIntensity_Dead,IdentifyPrimaryObjectsDead|Intensity_MinIntensity_Live,IdentifyPrimaryObjectsDead|Intensity_StdIntensity_Live,IdentifyPrimaryObjectsDead|Intensity_StdIntensity_Dead,IdentifyPrimaryObjectsDead|Intensity_MaxIntensityEdge_Live,IdentifyPrimaryObjectsDead|Intensity_MaxIntensityEdge_Dead,IdentifyPrimaryObjectsDead|Intensity_MeanIntensityEdge_Dead,IdentifyPrimaryObjectsDead|Intensity_MeanIntensityEdge_Live,IdentifyPrimaryObjectsDead|Intensity_MedianIntensity_Live,IdentifyPrimaryObjectsDead|Intensity_MedianIntensity_Dead,IdentifyPrimaryObjectsDead|Intensity_LowerQuartileIntensity_Dead,IdentifyPrimaryObjectsDead|Intensity_LowerQuartileIntensity_Live,IdentifyPrimaryObjectsDead|Intensity_MinIntensityEdge_Live,IdentifyPrimaryObjectsDead|Intensity_MinIntensityEdge_Dead,IdentifyPrimaryObjectsDead|Intensity_MADIntensity_Dead,IdentifyPrimaryObjectsDead|Intensity_MADIntensity_Live,IdentifyPrimaryObjectsDead|Intensity_IntegratedIntensity_Live,IdentifyPrimaryObjectsDead|Intensity_IntegratedIntensity_Dead,IdentifyPrimaryObjectsDead|Intensity_MaxIntensity_Live,IdentifyPrimaryObjectsDead|Intensity_MaxIntensity_Dead,IdentifyPrimaryObjectsDead|Intensity_IntegratedIntensityEdge_Live,IdentifyPrimaryObjectsDead|Intensity_IntegratedIntensityEdge_Dead,IdentifyPrimaryObjectsDead|Intensity_StdIntensityEdge_Live,IdentifyPrimaryObjectsDead|Intensity_StdIntensityEdge_Dead,IdentifyPrimaryObjectsDead|Intensity_MeanIntensity_Dead,IdentifyPrimaryObjectsDead|Intensity_MeanIntensity_Live,IdentifyPrimaryObjectsDead|AreaShape_BoundingBoxMinimum_Y,IdentifyPrimaryObjectsDead|AreaShape_BoundingBoxMinimum_X,IdentifyPrimaryObjectsDead|AreaShape_BoundingBoxMaximum_Y,IdentifyPrimaryObjectsDead|AreaShape_BoundingBoxMaximum_X,IdentifyPrimaryObjectsDead|AreaShape_MinorAxisLength,IdentifyPrimaryObjectsDead|AreaShape_Perimeter,IdentifyPrimaryObjectsDead|AreaShape_EquivalentDiameter,IdentifyPrimaryObjectsDead|AreaShape_Center_Y,IdentifyPrimaryObjectsDead|AreaShape_Center_X,IdentifyPrimaryObjectsDead|AreaShape_Solidity,IdentifyPrimaryObjectsDead|AreaShape_MaximumRadius,IdentifyPrimaryObjectsDead|AreaShape_ConvexArea,IdentifyPrimaryObjectsDead|AreaShape_BoundingBoxArea,IdentifyPrimaryObjectsDead|AreaShape_Area,IdentifyPrimaryObjectsDead|AreaShape_Eccentricity,IdentifyPrimaryObjectsDead|AreaShape_Compactness,IdentifyPrimaryObjectsDead|AreaShape_EulerNumber,IdentifyPrimaryObjectsDead|AreaShape_FormFactor,IdentifyPrimaryObjectsDead|AreaShape_MedianRadius,IdentifyPrimaryObjectsDead|AreaShape_MinFeretDiameter,IdentifyPrimaryObjectsDead|AreaShape_MaxFeretDiameter,IdentifyPrimaryObjectsDead|AreaShape_Orientation,IdentifyPrimaryObjectsDead|AreaShape_Extent,IdentifyPrimaryObjectsDead|AreaShape_MajorAxisLength,IdentifyPrimaryObjectsDead|AreaShape_MeanRadius,IdentifyPrimaryObjectsDead|Location_MaxIntensity_X_Live,IdentifyPrimaryObjectsDead|Location_MaxIntensity_X_Dead,IdentifyPrimaryObjectsDead|Location_MaxIntensity_Z_Dead,IdentifyPrimaryObjectsDead|Location_MaxIntensity_Z_Live,IdentifyPrimaryObjectsDead|Location_MaxIntensity_Y_Dead,IdentifyPrimaryObjectsDead|Location_MaxIntensity_Y_Live,IdentifyPrimaryObjectsDead|Location_Center_X,IdentifyPrimaryObjectsDead|Location_Center_Z,IdentifyPrimaryObjectsDead|Location_Center_Y,IdentifyPrimaryObjectsDead|Location_CenterMassIntensity_Z_Dead,IdentifyPrimaryObjectsDead|Location_CenterMassIntensity_Z_Live,IdentifyPrimaryObjectsDead|Location_CenterMassIntensity_Y_Live,IdentifyPrimaryObjectsDead|Location_CenterMassIntensity_Y_Dead,IdentifyPrimaryObjectsDead|Location_CenterMassIntensity_X_Dead,IdentifyPrimaryObjectsDead|Location_CenterMassIntensity_X_Live,IdentifyPrimaryObjectsDead|Number_Object_Number,CombinedObjectsTotal|AreaShape_ConvexArea,CombinedObjectsTotal|AreaShape_Orientation,CombinedObjectsTotal|AreaShape_Compactness,CombinedObjectsTotal|AreaShape_Solidity,CombinedObjectsTotal|AreaShape_EulerNumber,CombinedObjectsTotal|AreaShape_Area,CombinedObjectsTotal|AreaShape_Center_Y,CombinedObjectsTotal|AreaShape_Center_X,CombinedObjectsTotal|AreaShape_MedianRadius,CombinedObjectsTotal|AreaShape_FormFactor,CombinedObjectsTotal|AreaShape_EquivalentDiameter,CombinedObjectsTotal|AreaShape_MaximumRadius,CombinedObjectsTotal|AreaShape_BoundingBoxMinimum_X,CombinedObjectsTotal|AreaShape_BoundingBoxMinimum_Y,CombinedObjectsTotal|AreaShape_BoundingBoxArea,CombinedObjectsTotal|AreaShape_MajorAxisLength,CombinedObjectsTotal|AreaShape_BoundingBoxMaximum_Y,CombinedObjectsTotal|AreaShape_BoundingBoxMaximum_X,CombinedObjectsTotal|AreaShape_Perimeter,CombinedObjectsTotal|AreaShape_MeanRadius,CombinedObjectsTotal|AreaShape_Eccentricity,CombinedObjectsTotal|AreaShape_Extent,CombinedObjectsTotal|AreaShape_MaxFeretDiameter,CombinedObjectsTotal|AreaShape_MinFeretDiameter,CombinedObjectsTotal|AreaShape_MinorAxisLength,CombinedObjectsTotal|Intensity_UpperQuartileIntensity_Live,CombinedObjectsTotal|Intensity_UpperQuartileIntensity_Dead,CombinedObjectsTotal|Intensity_LowerQuartileIntensity_Live,CombinedObjectsTotal|Intensity_LowerQuartileIntensity_Dead,CombinedObjectsTotal|Intensity_MinIntensityEdge_Dead,CombinedObjectsTotal|Intensity_MinIntensityEdge_Live,CombinedObjectsTotal|Intensity_MedianIntensity_Dead,CombinedObjectsTotal|Intensity_MedianIntensity_Live,CombinedObjectsTotal|Intensity_IntegratedIntensityEdge_Live,CombinedObjectsTotal|Intensity_IntegratedIntensityEdge_Dead,CombinedObjectsTotal|Intensity_MaxIntensityEdge_Live,CombinedObjectsTotal|Intensity_MaxIntensityEdge_Dead,CombinedObjectsTotal|Intensity_MeanIntensity_Live,CombinedObjectsTotal|Intensity_MeanIntensity_Dead,CombinedObjectsTotal|Intensity_MeanIntensityEdge_Dead,CombinedObjectsTotal|Intensity_MeanIntensityEdge_Live,CombinedObjectsTotal|Intensity_MADIntensity_Live,CombinedObjectsTotal|Intensity_MADIntensity_Dead,CombinedObjectsTotal|Intensity_MassDisplacement_Dead,CombinedObjectsTotal|Intensity_MassDisplacement_Live,CombinedObjectsTotal|Intensity_StdIntensity_Dead,CombinedObjectsTotal|Intensity_StdIntensity_Live,CombinedObjectsTotal|Intensity_MaxIntensity_Dead,CombinedObjectsTotal|Intensity_MaxIntensity_Live,CombinedObjectsTotal|Intensity_StdIntensityEdge_Dead,CombinedObjectsTotal|Intensity_StdIntensityEdge_Live,CombinedObjectsTotal|Intensity_IntegratedIntensity_Live,CombinedObjectsTotal|Intensity_IntegratedIntensity_Dead,CombinedObjectsTotal|Intensity_MinIntensity_Dead,CombinedObjectsTotal|Intensity_MinIntensity_Live,CombinedObjectsTotal|Location_CenterMassIntensity_X_Dead,CombinedObjectsTotal|Location_CenterMassIntensity_X_Live,CombinedObjectsTotal|Location_CenterMassIntensity_Y_Dead,CombinedObjectsTotal|Location_CenterMassIntensity_Y_Live,CombinedObjectsTotal|Location_CenterMassIntensity_Z_Live,CombinedObjectsTotal|Location_CenterMassIntensity_Z_Dead,CombinedObjectsTotal|Location_MaxIntensity_Y_Live,CombinedObjectsTotal|Location_MaxIntensity_Y_Dead,CombinedObjectsTotal|Location_MaxIntensity_Z_Live,CombinedObjectsTotal|Location_MaxIntensity_Z_Dead,CombinedObjectsTotal|Location_MaxIntensity_X_Dead,CombinedObjectsTotal|Location_MaxIntensity_X_Live,CombinedObjectsTotal|Location_Center_X,CombinedObjectsTotal|Location_Center_Y,CombinedObjectsTotal|Number_Object_Number,Experiment|Modification_Timestamp,Experiment|Pipeline_Pipeline,Experiment|Run_Timestamp,Experiment|CellProfiler_Version
+    Representation of Nan/Inf:NaN
+    Add a prefix to file names?:Yes
+    Filename prefix:MyExpt_
+    Overwrite existing files without warning?:No
+    Data to export:Do not use
+    Combine these object measurements with those of the previous object?:No
+    File name:DATA.csv
+    Use the object name for the file name?:Yes

@@ -1,0 +1,267 @@
+CellProfiler Pipeline: http://www.cellprofiler.org
+Version:5
+DateRevision:421
+GitHash:
+ModuleCount:17
+HasImagePlaneDetails:False
+
+Images:[module_num:1|svn_version:'Unknown'|variable_revision_number:2|show_window:False|notes:['To begin creating your project, use the Images module to compile a list of files and/or folders that you want to analyze. You can also specify a set of rules to include only the desired files in your selected folders.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    :
+    Filter images?:Images only
+    Select the rule criteria:and (extension does isimage) (directory doesnot containregexp "[\\\\/]\\.")
+
+Metadata:[module_num:2|svn_version:'Unknown'|variable_revision_number:6|show_window:False|notes:['The Metadata module optionally allows you to extract information describing your images (i.e, metadata) which will be stored along with your measurements. This information can be contained in the file name and/or location, or in an external file.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Extract metadata?:Yes
+    Metadata data type:Text
+    Metadata types:{}
+    Extraction method count:1
+    Metadata extraction method:Extract from file/folder names
+    Metadata source:File name
+    Regular expression to extract from file name:(?P<Well>[A-P][0-9]{2})_s(?P<Site>[0-9])_w(?P<ChannelNumber>[0-9])
+    Regular expression to extract from folder name:(?P<Date>[0-9]{4}_[0-9]{2}_[0-9]{2})$
+    Extract metadata from:All images
+    Select the filtering criteria:and (file does contain "")
+    Metadata file location:Elsewhere...|
+    Match file and image metadata:[]
+    Use case insensitive matching?:No
+    Metadata file name:None
+    Does cached metadata exist?:No
+
+NamesAndTypes:[module_num:3|svn_version:'Unknown'|variable_revision_number:8|show_window:False|notes:['The NamesAndTypes module allows you to assign a meaningful name to each image by which other modules will refer to it.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Assign a name to:Images matching rules
+    Select the image type:Grayscale image
+    Name to assign these images:DNA
+    Match metadata:[]
+    Image set matching method:Order
+    Set intensity range from:Image metadata
+    Assignments count:1
+    Single images count:0
+    Maximum intensity:255.0
+    Process as 3D?:No
+    Relative pixel spacing in X:1.0
+    Relative pixel spacing in Y:1.0
+    Relative pixel spacing in Z:1.0
+    Select the rule criteria:and (file does contain "w2")
+    Name to assign these images:ASAP
+    Name to assign these objects:Cell
+    Select the image type:Grayscale image
+    Set intensity range from:Image metadata
+    Maximum intensity:255.0
+
+Groups:[module_num:4|svn_version:'Unknown'|variable_revision_number:2|show_window:False|notes:['The Groups module optionally allows you to split your list of images into image subsets (groups) which will be processed independently of each other. Examples of groupings include screening batches, microtiter plates, time-lapse movies, etc.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Do you want to group your images?:No
+    grouping metadata count:1
+    Metadata category:None
+
+IdentifyPrimaryObjects:[module_num:5|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:ASAP
+    Name the primary objects to be identified:IdentifyPrimaryObjects
+    Typical diameter of objects, in pixel units (Min,Max):15,100
+    Discard objects outside the diameter range?:No
+    Discard objects touching the border of the image?:No
+    Method to distinguish clumped objects:Intensity
+    Method to draw dividing lines between clumped objects:Shape
+    Size of smoothing filter:10
+    Suppress local maxima that are closer than this minimum allowed distance:7.0
+    Speed up by using lower-resolution image to find local maxima?:Yes
+    Fill holes in identified objects?:After both thresholding and declumping
+    Automatically calculate size of smoothing filter for declumping?:Yes
+    Automatically calculate minimum allowed distance between local maxima?:Yes
+    Handling of objects if excessive number of objects identified:Continue
+    Maximum number of objects:500
+    Use advanced settings?:Yes
+    Threshold setting version:12
+    Threshold strategy:Global
+    Thresholding method:Manual
+    Threshold smoothing scale:1.3488
+    Threshold correction factor:1.0
+    Lower and upper bounds on threshold:.2,1.0
+    Manual threshold:0.1
+    Select the measurement to threshold with:None
+    Two-class or three-class thresholding?:Two classes
+    Log transform before thresholding?:No
+    Assign pixels in the middle intensity class to the foreground or the background?:Foreground
+    Size of adaptive window:50
+    Lower outlier fraction:0.05
+    Upper outlier fraction:0.05
+    Averaging method:Mean
+    Variance method:Standard deviation
+    # of deviations:2.0
+    Thresholding method:Minimum Cross-Entropy
+
+MeasureObjectNeighbors:[module_num:6|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select objects to measure:IdentifyPrimaryObjects
+    Select neighboring objects to measure:IdentifyPrimaryObjects
+    Method to determine neighbors:Within a specified distance
+    Neighbor distance:5
+    Consider objects discarded for touching image border?:Yes
+    Retain the image of objects colored by numbers of neighbors?:No
+    Name the output image:ObjectNeighborCount
+    Select colormap:Blues
+    Retain the image of objects colored by percent of touching pixels?:No
+    Name the output image:PercentTouching
+    Select colormap:Oranges
+
+MeasureObjectSizeShape:[module_num:7|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select object sets to measure:IdentifyPrimaryObjects
+    Calculate the Zernike features?:No
+    Calculate the advanced features?:Yes
+
+MeasureObjectIntensity:[module_num:8|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:ASAP
+    Select objects to measure:IdentifyPrimaryObjects
+
+FilterObjects:[module_num:9|svn_version:'Unknown'|variable_revision_number:9|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the objects to filter:IdentifyPrimaryObjects
+    Name the output objects:FilterObjects
+    Select the filtering mode:Measurements
+    Select the filtering method:Limits
+    Select the objects that contain the filtered objects:None
+    Select the location of the rules or classifier file:Elsewhere...|
+    Rules or classifier file name:rules.txt
+    Class number:1
+    Measurement count:3
+    Additional object count:0
+    Assign overlapping child to:Both parents
+    Keep removed objects as a seperate set?:Yes
+    Name the objects removed by the filter:RemovedObjects
+    Select the measurement to filter by:AreaShape_Area
+    Filter using a minimum measurement value?:Yes
+    Minimum value:200
+    Filter using a maximum measurement value?:No
+    Maximum value:0
+    Select the measurement to filter by:Neighbors_NumberOfNeighbors_5
+    Filter using a minimum measurement value?:No
+    Minimum value:0.0
+    Filter using a maximum measurement value?:Yes
+    Maximum value:0
+    Select the measurement to filter by:AreaShape_FormFactor
+    Filter using a minimum measurement value?:Yes
+    Minimum value:.9
+    Filter using a maximum measurement value?:No
+    Maximum value:1.0
+
+OverlayOutlines:[module_num:10|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Display outlines on a blank image?:No
+    Select image on which to display outlines:ASAP
+    Name the output image:OrigOverlay
+    Outline display mode:Color
+    Select method to determine brightness of outlines:Max of image
+    How to outline:Thick
+    Select outline color:Red
+    Select objects to display:FilterObjects
+
+SaveImages:[module_num:11|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:OrigOverlay
+    Select method for constructing file names:From image filename
+    Select image name for file prefix:ASAP
+    Enter single file name:OrigBlue
+    Number of digits:4
+    Append a suffix to the image file name?:Yes
+    Text to append to the image name:obj2
+    Saved file format:tiff
+    Output file location:Default Output Folder|
+    Image bit depth:8-bit integer
+    Overwrite existing files without warning?:No
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+ExpandOrShrinkObjects:[module_num:12|svn_version:'Unknown'|variable_revision_number:2|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input objects:FilterObjects
+    Name the output objects:ExpandedFiltered
+    Select the operation:Expand objects by a specified number of pixels
+    Number of pixels by which to expand or shrink:2
+    Fill holes in objects so that all objects shrink to a single point?:No
+
+IdentifySecondaryObjects:[module_num:13|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
+    Select the input objects:ExpandedFiltered
+    Name the objects to be identified:Background
+    Select the method to identify the secondary objects:Distance - N
+    Select the input image:ASAP
+    Number of pixels by which to expand the primary objects:3
+    Regularization factor:0.05
+    Discard secondary objects touching the border of the image?:No
+    Discard the associated primary objects?:No
+    Name the new primary objects:FilteredNuclei
+    Fill holes in identified objects?:No
+    Threshold setting version:12
+    Threshold strategy:Global
+    Thresholding method:Minimum Cross-Entropy
+    Threshold smoothing scale:0.0
+    Threshold correction factor:1.0
+    Lower and upper bounds on threshold:0.0,1.0
+    Manual threshold:0.0
+    Select the measurement to threshold with:None
+    Two-class or three-class thresholding?:Two classes
+    Log transform before thresholding?:No
+    Assign pixels in the middle intensity class to the foreground or the background?:Foreground
+    Size of adaptive window:50
+    Lower outlier fraction:0.05
+    Upper outlier fraction:0.05
+    Averaging method:Mean
+    Variance method:Standard deviation
+    # of deviations:2.0
+    Thresholding method:Minimum Cross-Entropy
+
+IdentifyTertiaryObjects:[module_num:14|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the larger identified objects:Background
+    Select the smaller identified objects:ExpandedFiltered
+    Name the tertiary objects to be identified:Cytoplasm
+    Shrink smaller object prior to subtraction?:No
+
+MeasureObjectIntensity:[module_num:15|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:ASAP
+    Select objects to measure:Background, Cytoplasm, FilterObjects
+
+CalculateMath:[module_num:16|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Name the output measurement:Measurement
+    Operation:Subtract
+    Select the minuend measurement type:Object
+    Select the minuend objects:FilterObjects
+    Select the minuend measurement:Intensity_MeanIntensity_ASAP
+    Multiply the above operand by:1.0
+    Raise the power of above operand by:1.0
+    Select the subtrahend measurement type:Object
+    Select the subtrahend objects:Cytoplasm
+    Select the subtrahend measurement:Intensity_MeanIntensity_ASAP
+    Multiply the above operand by:1.0
+    Raise the power of above operand by:1.0
+    Take log10 of result?:No
+    Multiply the result by:1.0
+    Raise the power of result by:1.0
+    Add to the result:0.0
+    How should the output value be rounded?:Not rounded
+    Enter how many decimal places the value should be rounded to:0
+    Constrain the result to a lower bound?:No
+    Enter the lower bound:0.0
+    Constrain the result to an upper bound?:No
+    Enter the upper bound:1.0
+
+ExportToSpreadsheet:[module_num:17|svn_version:'Unknown'|variable_revision_number:13|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the column delimiter:Comma (",")
+    Add image metadata columns to your object data file?:No
+    Add image file and folder names to your object data file?:No
+    Select the measurements to export:Yes
+    Calculate the per-image mean values for object measurements?:Yes
+    Calculate the per-image median values for object measurements?:Yes
+    Calculate the per-image standard deviation values for object measurements?:Yes
+    Output file location:Default Output Folder|
+    Create a GenePattern GCT file?:No
+    Select source of sample row name:Metadata
+    Select the image to use as the identifier:None
+    Select the metadata to use as the identifier:None
+    Export all measurement types?:Yes
+    Press button to select measurements:IdentifyPrimaryObjects|AreaShape_InertiaTensor_1_0,IdentifyPrimaryObjects|AreaShape_InertiaTensor_1_1,IdentifyPrimaryObjects|AreaShape_InertiaTensor_0_1,IdentifyPrimaryObjects|AreaShape_InertiaTensor_0_0,IdentifyPrimaryObjects|AreaShape_CentralMoment_2_2,IdentifyPrimaryObjects|AreaShape_CentralMoment_2_3,IdentifyPrimaryObjects|AreaShape_CentralMoment_2_0,IdentifyPrimaryObjects|AreaShape_CentralMoment_2_1,IdentifyPrimaryObjects|AreaShape_CentralMoment_1_1,IdentifyPrimaryObjects|AreaShape_CentralMoment_1_0,IdentifyPrimaryObjects|AreaShape_CentralMoment_1_3,IdentifyPrimaryObjects|AreaShape_CentralMoment_1_2,IdentifyPrimaryObjects|AreaShape_CentralMoment_0_2,IdentifyPrimaryObjects|AreaShape_CentralMoment_0_3,IdentifyPrimaryObjects|AreaShape_CentralMoment_0_0,IdentifyPrimaryObjects|AreaShape_CentralMoment_0_1,IdentifyPrimaryObjects|AreaShape_HuMoment_2,IdentifyPrimaryObjects|AreaShape_HuMoment_0,IdentifyPrimaryObjects|AreaShape_HuMoment_3,IdentifyPrimaryObjects|AreaShape_HuMoment_1,IdentifyPrimaryObjects|AreaShape_HuMoment_5,IdentifyPrimaryObjects|AreaShape_HuMoment_4,IdentifyPrimaryObjects|AreaShape_HuMoment_6,IdentifyPrimaryObjects|AreaShape_Center_X,IdentifyPrimaryObjects|AreaShape_Center_Y,IdentifyPrimaryObjects|AreaShape_SpatialMoment_1_0,IdentifyPrimaryObjects|AreaShape_SpatialMoment_1_3,IdentifyPrimaryObjects|AreaShape_SpatialMoment_1_1,IdentifyPrimaryObjects|AreaShape_SpatialMoment_1_2,IdentifyPrimaryObjects|AreaShape_SpatialMoment_2_1,IdentifyPrimaryObjects|AreaShape_SpatialMoment_2_0,IdentifyPrimaryObjects|AreaShape_SpatialMoment_2_3,IdentifyPrimaryObjects|AreaShape_SpatialMoment_2_2,IdentifyPrimaryObjects|AreaShape_SpatialMoment_0_0,IdentifyPrimaryObjects|AreaShape_SpatialMoment_0_2,IdentifyPrimaryObjects|AreaShape_SpatialMoment_0_1,IdentifyPrimaryObjects|AreaShape_SpatialMoment_0_3,IdentifyPrimaryObjects|AreaShape_Extent,IdentifyPrimaryObjects|AreaShape_NormalizedMoment_1_0,IdentifyPrimaryObjects|AreaShape_NormalizedMoment_1_1,IdentifyPrimaryObjects|AreaShape_NormalizedMoment_1_3,IdentifyPrimaryObjects|AreaShape_NormalizedMoment_1_2,IdentifyPrimaryObjects|AreaShape_NormalizedMoment_3_0,IdentifyPrimaryObjects|AreaShape_NormalizedMoment_3_1,IdentifyPrimaryObjects|AreaShape_NormalizedMoment_3_2,IdentifyPrimaryObjects|AreaShape_NormalizedMoment_3_3,IdentifyPrimaryObjects|AreaShape_NormalizedMoment_2_2,IdentifyPrimaryObjects|AreaShape_NormalizedMoment_2_3,IdentifyPrimaryObjects|AreaShape_NormalizedMoment_2_0,IdentifyPrimaryObjects|AreaShape_NormalizedMoment_2_1,IdentifyPrimaryObjects|AreaShape_NormalizedMoment_0_1,IdentifyPrimaryObjects|AreaShape_NormalizedMoment_0_2,IdentifyPrimaryObjects|AreaShape_NormalizedMoment_0_0,IdentifyPrimaryObjects|AreaShape_NormalizedMoment_0_3,IdentifyPrimaryObjects|AreaShape_ConvexArea,IdentifyPrimaryObjects|AreaShape_MajorAxisLength,IdentifyPrimaryObjects|AreaShape_Eccentricity,IdentifyPrimaryObjects|AreaShape_BoundingBoxArea,IdentifyPrimaryObjects|AreaShape_BoundingBoxMaximum_Y,IdentifyPrimaryObjects|AreaShape_BoundingBoxMaximum_X,IdentifyPrimaryObjects|AreaShape_EquivalentDiameter,IdentifyPrimaryObjects|AreaShape_MinorAxisLength,IdentifyPrimaryObjects|AreaShape_MaximumRadius,IdentifyPrimaryObjects|AreaShape_BoundingBoxMinimum_X,IdentifyPrimaryObjects|AreaShape_BoundingBoxMinimum_Y,IdentifyPrimaryObjects|AreaShape_MeanRadius,IdentifyPrimaryObjects|AreaShape_Solidity,IdentifyPrimaryObjects|AreaShape_Perimeter,IdentifyPrimaryObjects|AreaShape_InertiaTensorEigenvalues_0,IdentifyPrimaryObjects|AreaShape_InertiaTensorEigenvalues_1,IdentifyPrimaryObjects|AreaShape_Orientation,IdentifyPrimaryObjects|AreaShape_EulerNumber,IdentifyPrimaryObjects|AreaShape_MaxFeretDiameter,IdentifyPrimaryObjects|AreaShape_MedianRadius,IdentifyPrimaryObjects|AreaShape_Compactness,IdentifyPrimaryObjects|AreaShape_MinFeretDiameter,IdentifyPrimaryObjects|AreaShape_FormFactor,IdentifyPrimaryObjects|AreaShape_Area,IdentifyPrimaryObjects|Location_Center_Y,IdentifyPrimaryObjects|Location_Center_Z,IdentifyPrimaryObjects|Location_Center_X,IdentifyPrimaryObjects|Location_MaxIntensity_Y_ASAP,IdentifyPrimaryObjects|Location_MaxIntensity_X_ASAP,IdentifyPrimaryObjects|Location_MaxIntensity_Z_ASAP,IdentifyPrimaryObjects|Location_CenterMassIntensity_Z_ASAP,IdentifyPrimaryObjects|Location_CenterMassIntensity_Y_ASAP,IdentifyPrimaryObjects|Location_CenterMassIntensity_X_ASAP,IdentifyPrimaryObjects|Neighbors_SecondClosestDistance_5,IdentifyPrimaryObjects|Neighbors_NumberOfNeighbors_5,IdentifyPrimaryObjects|Neighbors_FirstClosestObjectNumber_5,IdentifyPrimaryObjects|Neighbors_FirstClosestDistance_5,IdentifyPrimaryObjects|Neighbors_AngleBetweenNeighbors_5,IdentifyPrimaryObjects|Neighbors_PercentTouching_5,IdentifyPrimaryObjects|Neighbors_SecondClosestObjectNumber_5,IdentifyPrimaryObjects|Intensity_IntegratedIntensity_ASAP,IdentifyPrimaryObjects|Intensity_StdIntensity_ASAP,IdentifyPrimaryObjects|Intensity_MeanIntensity_ASAP,IdentifyPrimaryObjects|Intensity_MinIntensityEdge_ASAP,IdentifyPrimaryObjects|Intensity_IntegratedIntensityEdge_ASAP,IdentifyPrimaryObjects|Intensity_MinIntensity_ASAP,IdentifyPrimaryObjects|Intensity_LowerQuartileIntensity_ASAP,IdentifyPrimaryObjects|Intensity_MassDisplacement_ASAP,IdentifyPrimaryObjects|Intensity_MeanIntensityEdge_ASAP,IdentifyPrimaryObjects|Intensity_MADIntensity_ASAP,IdentifyPrimaryObjects|Intensity_MaxIntensityEdge_ASAP,IdentifyPrimaryObjects|Intensity_UpperQuartileIntensity_ASAP,IdentifyPrimaryObjects|Intensity_StdIntensityEdge_ASAP,IdentifyPrimaryObjects|Intensity_MedianIntensity_ASAP,IdentifyPrimaryObjects|Intensity_MaxIntensity_ASAP,IdentifyPrimaryObjects|Children_RemovedObjects_Count,IdentifyPrimaryObjects|Children_FilterObjects_Count,IdentifyPrimaryObjects|Number_Object_Number,Cytoplasm|Location_MaxIntensity_Z_ASAP,Cytoplasm|Location_MaxIntensity_Y_ASAP,Cytoplasm|Location_MaxIntensity_X_ASAP,Cytoplasm|Location_CenterMassIntensity_Y_ASAP,Cytoplasm|Location_CenterMassIntensity_Z_ASAP,Cytoplasm|Location_CenterMassIntensity_X_ASAP,Cytoplasm|Location_Center_X,Cytoplasm|Location_Center_Y,Cytoplasm|Intensity_IntegratedIntensityEdge_ASAP,Cytoplasm|Intensity_MADIntensity_ASAP,Cytoplasm|Intensity_IntegratedIntensity_ASAP,Cytoplasm|Intensity_MinIntensityEdge_ASAP,Cytoplasm|Intensity_MinIntensity_ASAP,Cytoplasm|Intensity_MeanIntensityEdge_ASAP,Cytoplasm|Intensity_StdIntensity_ASAP,Cytoplasm|Intensity_MaxIntensity_ASAP,Cytoplasm|Intensity_MaxIntensityEdge_ASAP,Cytoplasm|Intensity_UpperQuartileIntensity_ASAP,Cytoplasm|Intensity_MassDisplacement_ASAP,Cytoplasm|Intensity_LowerQuartileIntensity_ASAP,Cytoplasm|Intensity_MeanIntensity_ASAP,Cytoplasm|Intensity_StdIntensityEdge_ASAP,Cytoplasm|Intensity_MedianIntensity_ASAP,Cytoplasm|Parent_ExpandedFiltered,Cytoplasm|Parent_Background,Cytoplasm|Math_Measurement,Cytoplasm|Number_Object_Number,Image|Count_IdentifyPrimaryObjects,Image|Count_ExpandedFiltered,Image|Count_Cytoplasm,Image|Count_RemovedObjects,Image|Count_Background,Image|Count_FilterObjects,Image|ModuleError_04Groups,Image|ModuleError_13IdentifySecondaryObjects,Image|ModuleError_15MeasureObjectIntensity,Image|ModuleError_06MeasureObjectNeighbors,Image|ModuleError_07MeasureObjectSizeShape,Image|ModuleError_05IdentifyPrimaryObjects,Image|ModuleError_16CalculateMath,Image|ModuleError_11SaveImages,Image|ModuleError_14IdentifyTertiaryObjects,Image|ModuleError_03NamesAndTypes,Image|ModuleError_12ExpandOrShrinkObjects,Image|ModuleError_02Metadata,Image|ModuleError_01Images,Image|ModuleError_09FilterObjects,Image|ModuleError_08MeasureObjectIntensity,Image|ModuleError_10OverlayOutlines,Image|ExecutionTime_14IdentifyTertiaryObjects,Image|ExecutionTime_06MeasureObjectNeighbors,Image|ExecutionTime_08MeasureObjectIntensity,Image|ExecutionTime_07MeasureObjectSizeShape,Image|ExecutionTime_13IdentifySecondaryObjects,Image|ExecutionTime_15MeasureObjectIntensity,Image|ExecutionTime_01Images,Image|ExecutionTime_09FilterObjects,Image|ExecutionTime_02Metadata,Image|ExecutionTime_10OverlayOutlines,Image|ExecutionTime_03NamesAndTypes,Image|ExecutionTime_12ExpandOrShrinkObjects,Image|ExecutionTime_16CalculateMath,Image|ExecutionTime_05IdentifyPrimaryObjects,Image|ExecutionTime_11SaveImages,Image|ExecutionTime_04Groups,Image|Metadata_Frame,Image|Metadata_Site,Image|Metadata_ChannelNumber,Image|Metadata_FileLocation,Image|Metadata_Series,Image|Metadata_Well,Image|FileName_ASAP,Image|Scaling_ASAP,Image|Frame_ASAP,Image|Height_ASAP,Image|URL_ASAP,Image|PathName_ASAP,Image|Group_Number,Image|Group_Index,Image|Threshold_FinalThreshold_IdentifyPrimaryObjects,Image|Threshold_WeightedVariance_IdentifyPrimaryObjects,Image|Threshold_OrigThreshold_IdentifyPrimaryObjects,Image|Threshold_SumOfEntropies_IdentifyPrimaryObjects,Image|MD5Digest_ASAP,Image|Width_ASAP,Image|Series_ASAP,Background|Location_Center_Z,Background|Location_Center_Y,Background|Location_Center_X,Background|Location_MaxIntensity_Y_ASAP,Background|Location_MaxIntensity_X_ASAP,Background|Location_MaxIntensity_Z_ASAP,Background|Location_CenterMassIntensity_X_ASAP,Background|Location_CenterMassIntensity_Z_ASAP,Background|Location_CenterMassIntensity_Y_ASAP,Background|Intensity_MinIntensity_ASAP,Background|Intensity_IntegratedIntensityEdge_ASAP,Background|Intensity_IntegratedIntensity_ASAP,Background|Intensity_MADIntensity_ASAP,Background|Intensity_UpperQuartileIntensity_ASAP,Background|Intensity_MaxIntensityEdge_ASAP,Background|Intensity_MeanIntensityEdge_ASAP,Background|Intensity_MassDisplacement_ASAP,Background|Intensity_MedianIntensity_ASAP,Background|Intensity_StdIntensityEdge_ASAP,Background|Intensity_StdIntensity_ASAP,Background|Intensity_MinIntensityEdge_ASAP,Background|Intensity_MaxIntensity_ASAP,Background|Intensity_LowerQuartileIntensity_ASAP,Background|Intensity_MeanIntensity_ASAP,Background|Number_Object_Number,Background|Parent_ExpandedFiltered,Background|Children_Cytoplasm_Count,ExpandedFiltered|Children_Cytoplasm_Count,ExpandedFiltered|Children_Background_Count,ExpandedFiltered|Location_Center_X,ExpandedFiltered|Location_Center_Y,ExpandedFiltered|Number_Object_Number,FilterObjects|Location_CenterMassIntensity_X_ASAP,FilterObjects|Location_CenterMassIntensity_Y_ASAP,FilterObjects|Location_CenterMassIntensity_Z_ASAP,FilterObjects|Location_Center_Y,FilterObjects|Location_Center_Z,FilterObjects|Location_Center_X,FilterObjects|Location_MaxIntensity_Y_ASAP,FilterObjects|Location_MaxIntensity_Z_ASAP,FilterObjects|Location_MaxIntensity_X_ASAP,FilterObjects|Intensity_MeanIntensity_ASAP,FilterObjects|Intensity_MassDisplacement_ASAP,FilterObjects|Intensity_IntegratedIntensityEdge_ASAP,FilterObjects|Intensity_MinIntensity_ASAP,FilterObjects|Intensity_StdIntensityEdge_ASAP,FilterObjects|Intensity_UpperQuartileIntensity_ASAP,FilterObjects|Intensity_MaxIntensity_ASAP,FilterObjects|Intensity_StdIntensity_ASAP,FilterObjects|Intensity_MinIntensityEdge_ASAP,FilterObjects|Intensity_IntegratedIntensity_ASAP,FilterObjects|Intensity_LowerQuartileIntensity_ASAP,FilterObjects|Intensity_MedianIntensity_ASAP,FilterObjects|Intensity_MeanIntensityEdge_ASAP,FilterObjects|Intensity_MADIntensity_ASAP,FilterObjects|Intensity_MaxIntensityEdge_ASAP,FilterObjects|Parent_IdentifyPrimaryObjects,FilterObjects|Math_Measurement,FilterObjects|Number_Object_Number,RemovedObjects|Location_Center_X,RemovedObjects|Location_Center_Z,RemovedObjects|Location_Center_Y,RemovedObjects|Parent_IdentifyPrimaryObjects,RemovedObjects|Number_Object_Number,Experiment|Modification_Timestamp,Experiment|CellProfiler_Version,Experiment|Run_Timestamp,Experiment|Pipeline_Pipeline
+    Representation of Nan/Inf:NaN
+    Add a prefix to file names?:Yes
+    Filename prefix:MyExpt_
+    Overwrite existing files without warning?:No
+    Data to export:Do not use
+    Combine these object measurements with those of the previous object?:No
+    File name:DATA.csv
+    Use the object name for the file name?:Yes
