@@ -1,0 +1,614 @@
+CellProfiler Pipeline: http://www.cellprofiler.org
+Version:5
+DateRevision:428
+GitHash:
+ModuleCount:39
+HasImagePlaneDetails:False
+
+Images:[module_num:1|svn_version:'Unknown'|variable_revision_number:2|show_window:False|notes:['To begin creating your project, use the Images module to compile a list of files and/or folders that you want to analyze. You can also specify a set of rules to include only the desired files in your selected folders.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    :
+    Filter images?:Images only
+    Select the rule criteria:and (extension does isimage) (directory doesnot containregexp "[\\\\/]\\.")
+
+Metadata:[module_num:2|svn_version:'Unknown'|variable_revision_number:6|show_window:False|notes:['The Metadata module optionally allows you to extract information describing your images (i.e, metadata) which will be stored along with your measurements. This information can be contained in the file name and/or location, or in an external file.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Extract metadata?:Yes
+    Metadata data type:Text
+    Metadata types:{}
+    Extraction method count:1
+    Metadata extraction method:Extract from file/folder names
+    Metadata source:File name
+    Regular expression to extract from file name:(?P<Well>[A-P][0-9]{2})_s(?P<Site>[0-9])_w(?P<ChannelNumber>[0-9])
+    Regular expression to extract from folder name:(?P<Date>[0-9]{4}_[0-9]{2}_[0-9]{2})$
+    Extract metadata from:All images
+    Select the filtering criteria:and (file does contain "")
+    Metadata file location:Elsewhere...|
+    Match file and image metadata:[]
+    Use case insensitive matching?:No
+    Metadata file name:None
+    Does cached metadata exist?:No
+
+NamesAndTypes:[module_num:3|svn_version:'Unknown'|variable_revision_number:8|show_window:False|notes:['The NamesAndTypes module allows you to assign a meaningful name to each image by which other modules will refer to it.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Assign a name to:Images matching rules
+    Select the image type:Grayscale image
+    Name to assign these images:DNA
+    Match metadata:[]
+    Image set matching method:Order
+    Set intensity range from:Image metadata
+    Assignments count:3
+    Single images count:0
+    Maximum intensity:255.0
+    Process as 3D?:No
+    Relative pixel spacing in X:1.0
+    Relative pixel spacing in Y:1.0
+    Relative pixel spacing in Z:1.0
+    Select the rule criteria:and (file does contain "w2")
+    Name to assign these images:MVGreen
+    Name to assign these objects:Cell
+    Select the image type:Grayscale image
+    Set intensity range from:Image metadata
+    Maximum intensity:255.0
+    Select the rule criteria:and (file does contain "w1")
+    Name to assign these images:Trans
+    Name to assign these objects:Cytoplasm
+    Select the image type:Grayscale image
+    Set intensity range from:Image metadata
+    Maximum intensity:255.0
+    Select the rule criteria:and (file does contain "w3")
+    Name to assign these images:MTDR
+    Name to assign these objects:Nucleus
+    Select the image type:Grayscale image
+    Set intensity range from:Image metadata
+    Maximum intensity:255.0
+
+Groups:[module_num:4|svn_version:'Unknown'|variable_revision_number:2|show_window:False|notes:['The Groups module optionally allows you to split your list of images into image subsets (groups) which will be processed independently of each other. Examples of groupings include screening batches, microtiter plates, time-lapse movies, etc.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Do you want to group your images?:No
+    grouping metadata count:1
+    Metadata category:None
+
+RescaleIntensity:[module_num:5|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:MVGreen
+    Name the output image:RescaleIntensityG
+    Rescaling method:Divide each image by the same value
+    Method to calculate the minimum intensity:Custom
+    Method to calculate the maximum intensity:Custom
+    Lower intensity limit for the input image:0.0
+    Upper intensity limit for the input image:1.0
+    Intensity range for the input image:0.0,1.0
+    Intensity range for the output image:0.0,1.0
+    Select image to match in maximum intensity:None
+    Divisor value:.5
+    Divisor measurement:None
+
+RescaleIntensity:[module_num:6|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:MTDR
+    Name the output image:RescaleIntensityDR
+    Rescaling method:Divide each image by the same value
+    Method to calculate the minimum intensity:Custom
+    Method to calculate the maximum intensity:Custom
+    Lower intensity limit for the input image:0.0
+    Upper intensity limit for the input image:1.0
+    Intensity range for the input image:0.0,1.0
+    Intensity range for the output image:0.0,1.0
+    Select image to match in maximum intensity:None
+    Divisor value:1
+    Divisor measurement:None
+
+IdentifyPrimaryObjects:[module_num:7|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:Trans
+    Name the primary objects to be identified:IdentifyPrimaryObjectsLIVE
+    Typical diameter of objects, in pixel units (Min,Max):10,40
+    Discard objects outside the diameter range?:Yes
+    Discard objects touching the border of the image?:Yes
+    Method to distinguish clumped objects:Shape
+    Method to draw dividing lines between clumped objects:Intensity
+    Size of smoothing filter:10
+    Suppress local maxima that are closer than this minimum allowed distance:7.0
+    Speed up by using lower-resolution image to find local maxima?:Yes
+    Fill holes in identified objects?:After both thresholding and declumping
+    Automatically calculate size of smoothing filter for declumping?:Yes
+    Automatically calculate minimum allowed distance between local maxima?:Yes
+    Handling of objects if excessive number of objects identified:Continue
+    Maximum number of objects:500
+    Use advanced settings?:Yes
+    Threshold setting version:12
+    Threshold strategy:Adaptive
+    Thresholding method:Minimum Cross-Entropy
+    Threshold smoothing scale:1.3488
+    Threshold correction factor:1.0
+    Lower and upper bounds on threshold:.48,1.0
+    Manual threshold:0.0
+    Select the measurement to threshold with:None
+    Two-class or three-class thresholding?:Two classes
+    Log transform before thresholding?:No
+    Assign pixels in the middle intensity class to the foreground or the background?:Foreground
+    Size of adaptive window:50
+    Lower outlier fraction:0.05
+    Upper outlier fraction:0.05
+    Averaging method:Mean
+    Variance method:Standard deviation
+    # of deviations:2.0
+    Thresholding method:Sauvola
+
+MeasureObjectSizeShape:[module_num:8|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select object sets to measure:IdentifyPrimaryObjectsLIVE
+    Calculate the Zernike features?:No
+    Calculate the advanced features?:No
+
+FilterObjects:[module_num:9|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the objects to filter:IdentifyPrimaryObjectsLIVE
+    Name the output objects:FilterObjectsLIVE
+    Select the filtering mode:Measurements
+    Select the filtering method:Limits
+    Select the objects that contain the filtered objects:None
+    Select the location of the rules or classifier file:Elsewhere...|
+    Rules or classifier file name:rules.txt
+    Class number:1
+    Measurement count:1
+    Additional object count:0
+    Assign overlapping child to:Both parents
+    Keep removed objects as a separate set?:No
+    Name the objects removed by the filter:RemovedObjects
+    Select the measurement to filter by:AreaShape_FormFactor
+    Filter using a minimum measurement value?:Yes
+    Minimum value:.88
+    Filter using a maximum measurement value?:No
+    Maximum value:1.0
+    Allow fuzzy feature matching?:No
+
+GaussianFilter:[module_num:10|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:RescaleIntensityDR
+    Name the output image:GaussianFilter1R
+    Sigma:1
+
+GaussianFilter:[module_num:11|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:GaussianFilter1R
+    Name the output image:GaussianFilter2R
+    Sigma:200
+
+CorrectIlluminationApply:[module_num:12|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:GaussianFilter1R
+    Name the output image:CorrMTDR
+    Select the illumination function:GaussianFilter2R
+    Select how the illumination function is applied:Subtract
+    Set output image values less than 0 equal to 0?:Yes
+    Set output image values greater than 1 equal to 1?:Yes
+
+RescaleIntensity:[module_num:13|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:CorrMTDR
+    Name the output image:RescaleIntensityDR2
+    Rescaling method:Divide each image by the same value
+    Method to calculate the minimum intensity:Custom
+    Method to calculate the maximum intensity:Custom
+    Lower intensity limit for the input image:0.0
+    Upper intensity limit for the input image:1.0
+    Intensity range for the input image:0.0,1.0
+    Intensity range for the output image:0.0,1.0
+    Select image to match in maximum intensity:None
+    Divisor value:.2
+    Divisor measurement:None
+
+IdentifyPrimaryObjects:[module_num:14|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:RescaleIntensityDR2
+    Name the primary objects to be identified:IdentifyPrimaryObjectsMTDR
+    Typical diameter of objects, in pixel units (Min,Max):15,100
+    Discard objects outside the diameter range?:No
+    Discard objects touching the border of the image?:No
+    Method to distinguish clumped objects:Intensity
+    Method to draw dividing lines between clumped objects:Shape
+    Size of smoothing filter:10
+    Suppress local maxima that are closer than this minimum allowed distance:7.0
+    Speed up by using lower-resolution image to find local maxima?:Yes
+    Fill holes in identified objects?:After both thresholding and declumping
+    Automatically calculate size of smoothing filter for declumping?:Yes
+    Automatically calculate minimum allowed distance between local maxima?:Yes
+    Handling of objects if excessive number of objects identified:Continue
+    Maximum number of objects:500
+    Use advanced settings?:Yes
+    Threshold setting version:12
+    Threshold strategy:Global
+    Thresholding method:Minimum Cross-Entropy
+    Threshold smoothing scale:1.3488
+    Threshold correction factor:1.0
+    Lower and upper bounds on threshold:.06,1.0
+    Manual threshold:0.2
+    Select the measurement to threshold with:None
+    Two-class or three-class thresholding?:Two classes
+    Log transform before thresholding?:No
+    Assign pixels in the middle intensity class to the foreground or the background?:Foreground
+    Size of adaptive window:50
+    Lower outlier fraction:0.05
+    Upper outlier fraction:0.05
+    Averaging method:Mean
+    Variance method:Standard deviation
+    # of deviations:2.0
+    Thresholding method:Minimum Cross-Entropy
+
+MeasureObjectNeighbors:[module_num:15|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select objects to measure:IdentifyPrimaryObjectsMTDR
+    Select neighboring objects to measure:IdentifyPrimaryObjectsMTDR
+    Method to determine neighbors:Within a specified distance
+    Neighbor distance:22
+    Consider objects discarded for touching image border?:Yes
+    Retain the image of objects colored by numbers of neighbors?:No
+    Name the output image:ObjectNeighborCount
+    Select colormap:Blues
+    Retain the image of objects colored by percent of touching pixels?:No
+    Name the output image:PercentTouching
+    Select colormap:Oranges
+
+MeasureObjectSizeShape:[module_num:16|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select object sets to measure:IdentifyPrimaryObjectsMTDR
+    Calculate the Zernike features?:No
+    Calculate the advanced features?:No
+
+MeasureObjectIntensity:[module_num:17|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:MTDR
+    Select objects to measure:IdentifyPrimaryObjectsMTDR
+
+FilterObjects:[module_num:18|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the objects to filter:IdentifyPrimaryObjectsMTDR
+    Name the output objects:FilterObjectsMTDR
+    Select the filtering mode:Measurements
+    Select the filtering method:Limits
+    Select the objects that contain the filtered objects:None
+    Select the location of the rules or classifier file:Elsewhere...|
+    Rules or classifier file name:rules.txt
+    Class number:1
+    Measurement count:3
+    Additional object count:0
+    Assign overlapping child to:Both parents
+    Keep removed objects as a separate set?:Yes
+    Name the objects removed by the filter:RemovedObjects2
+    Select the measurement to filter by:AreaShape_Area
+    Filter using a minimum measurement value?:Yes
+    Minimum value:200
+    Filter using a maximum measurement value?:Yes
+    Maximum value:1500
+    Select the measurement to filter by:Neighbors_NumberOfNeighbors_22
+    Filter using a minimum measurement value?:No
+    Minimum value:0.0
+    Filter using a maximum measurement value?:Yes
+    Maximum value:0
+    Select the measurement to filter by:AreaShape_FormFactor
+    Filter using a minimum measurement value?:Yes
+    Minimum value:.88
+    Filter using a maximum measurement value?:No
+    Maximum value:1.0
+    Allow fuzzy feature matching?:No
+
+MaskObjects:[module_num:19|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select objects to be masked:FilterObjectsMTDR
+    Name the masked objects:LiveCells
+    Mask using a region defined by other objects or by binary image?:Objects
+    Select the masking object:IdentifyPrimaryObjectsLIVE
+    Select the masking image:None
+    Handling of objects that are partially masked:Keep
+    Fraction of object that must overlap:0.5
+    Numbering of resulting objects:Renumber
+    Invert the mask?:No
+
+ExpandOrShrinkObjects:[module_num:20|svn_version:'Unknown'|variable_revision_number:2|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input objects:LiveCells
+    Name the output objects:ExpandedFiltered
+    Select the operation:Expand objects by a specified number of pixels
+    Number of pixels by which to expand or shrink:8
+    Fill holes in objects so that all objects shrink to a single point?:No
+    Expand or shrink measurement:None
+
+ExpandOrShrinkObjects:[module_num:21|svn_version:'Unknown'|variable_revision_number:2|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input objects:LiveCells
+    Name the output objects:ContractedFiltered
+    Select the operation:Shrink objects by a specified number of pixels
+    Number of pixels by which to expand or shrink:5
+    Fill holes in objects so that all objects shrink to a single point?:No
+    Expand or shrink measurement:None
+
+IdentifySecondaryObjects:[module_num:22|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input objects:LiveCells
+    Name the objects to be identified:IdentifySecondaryObjects
+    Select the method to identify the secondary objects:Distance - N
+    Select the input image:RescaleIntensityDR2
+    Number of pixels by which to expand the primary objects:11
+    Regularization factor:0.05
+    Discard secondary objects touching the border of the image?:No
+    Discard the associated primary objects?:No
+    Name the new primary objects:FilteredNuclei
+    Fill holes in identified objects?:No
+    Threshold setting version:12
+    Threshold strategy:Global
+    Thresholding method:Minimum Cross-Entropy
+    Threshold smoothing scale:0.0
+    Threshold correction factor:1.0
+    Lower and upper bounds on threshold:0.0,1.0
+    Manual threshold:0.0
+    Select the measurement to threshold with:None
+    Two-class or three-class thresholding?:Two classes
+    Log transform before thresholding?:No
+    Assign pixels in the middle intensity class to the foreground or the background?:Foreground
+    Size of adaptive window:50
+    Lower outlier fraction:0.05
+    Upper outlier fraction:0.05
+    Averaging method:Mean
+    Variance method:Standard deviation
+    # of deviations:2.0
+    Thresholding method:Minimum Cross-Entropy
+
+IdentifyTertiaryObjects:[module_num:23|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the larger identified objects:IdentifySecondaryObjects
+    Select the smaller identified objects:ExpandedFiltered
+    Name the tertiary objects to be identified:Background
+    Shrink smaller object prior to subtraction?:No
+
+OverlayOutlines:[module_num:24|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Display outlines on a blank image?:No
+    Select image on which to display outlines:RescaleIntensityG
+    Name the output image:OrigOverlayBackG
+    Outline display mode:Color
+    Select method to determine brightness of outlines:Max of image
+    How to outline:Outer
+    Select outline color:Red
+    Select objects to display:Background
+
+OverlayOutlines:[module_num:25|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Display outlines on a blank image?:No
+    Select image on which to display outlines:RescaleIntensityDR2
+    Name the output image:OrigOverlayBackDR
+    Outline display mode:Color
+    Select method to determine brightness of outlines:Max of image
+    How to outline:Outer
+    Select outline color:Red
+    Select objects to display:Background
+
+OverlayOutlines:[module_num:26|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Display outlines on a blank image?:No
+    Select image on which to display outlines:RescaleIntensityG
+    Name the output image:OrigOverlayLiveG
+    Outline display mode:Color
+    Select method to determine brightness of outlines:Max of image
+    How to outline:Outer
+    Select outline color:Red
+    Select objects to display:ContractedFiltered
+
+OverlayOutlines:[module_num:27|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Display outlines on a blank image?:No
+    Select image on which to display outlines:RescaleIntensityDR2
+    Name the output image:OrigOverlayLiveDR
+    Outline display mode:Color
+    Select method to determine brightness of outlines:Max of image
+    How to outline:Outer
+    Select outline color:Red
+    Select objects to display:LiveCells
+
+OverlayOutlines:[module_num:28|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Display outlines on a blank image?:No
+    Select image on which to display outlines:Trans
+    Name the output image:OrigOverlayTrans
+    Outline display mode:Color
+    Select method to determine brightness of outlines:Max of image
+    How to outline:Outer
+    Select outline color:green
+    Select objects to display:LiveCells
+
+SaveImages:[module_num:29|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
+    Select the type of image to save:Image
+    Select the image to save:OrigOverlayBackG
+    Select method for constructing file names:From image filename
+    Select image name for file prefix:MVGreen
+    Enter single file name:OrigBlue
+    Number of digits:4
+    Append a suffix to the image file name?:Yes
+    Text to append to the image name:obj1
+    Saved file format:tiff
+    Output file location:Default Output Folder|
+    Image bit depth:32-bit floating point
+    Overwrite existing files without warning?:No
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+SaveImages:[module_num:30|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:OrigOverlayBackDR
+    Select method for constructing file names:From image filename
+    Select image name for file prefix:MTDR
+    Enter single file name:OrigBlue
+    Number of digits:4
+    Append a suffix to the image file name?:Yes
+    Text to append to the image name:obj1
+    Saved file format:tiff
+    Output file location:Default Output Folder|
+    Image bit depth:32-bit floating point
+    Overwrite existing files without warning?:No
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+SaveImages:[module_num:31|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:OrigOverlayLiveG
+    Select method for constructing file names:From image filename
+    Select image name for file prefix:MVGreen
+    Enter single file name:OrigBlue
+    Number of digits:4
+    Append a suffix to the image file name?:Yes
+    Text to append to the image name:obj2
+    Saved file format:tiff
+    Output file location:Default Output Folder|
+    Image bit depth:32-bit floating point
+    Overwrite existing files without warning?:No
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+SaveImages:[module_num:32|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:OrigOverlayLiveDR
+    Select method for constructing file names:From image filename
+    Select image name for file prefix:MTDR
+    Enter single file name:OrigBlue
+    Number of digits:4
+    Append a suffix to the image file name?:Yes
+    Text to append to the image name:obj2
+    Saved file format:tiff
+    Output file location:Default Output Folder|
+    Image bit depth:32-bit floating point
+    Overwrite existing files without warning?:No
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+SaveImages:[module_num:33|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:OrigOverlayTrans
+    Select method for constructing file names:From image filename
+    Select image name for file prefix:MVGreen
+    Enter single file name:OrigBlue
+    Number of digits:4
+    Append a suffix to the image file name?:Yes
+    Text to append to the image name:obj3
+    Saved file format:tiff
+    Output file location:Default Output Folder|
+    Image bit depth:32-bit floating point
+    Overwrite existing files without warning?:No
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+MeasureObjectIntensity:[module_num:34|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:MTDR, MVGreen
+    Select objects to measure:Background, ContractedFiltered, LiveCells
+
+CalculateMath:[module_num:35|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Name the output measurement:MinusBackgroundMVG
+    Operation:Subtract
+    Select the minuend measurement type:Object
+    Select the minuend objects:ContractedFiltered
+    Select the minuend measurement:Intensity_MeanIntensity_MVGreen
+    Multiply the above operand by:1.0
+    Raise the power of above operand by:1.0
+    Select the subtrahend measurement type:Object
+    Select the subtrahend objects:Background
+    Select the subtrahend measurement:Intensity_MeanIntensity_MVGreen
+    Multiply the above operand by:1.0
+    Raise the power of above operand by:1.0
+    Take log10 of result?:No
+    Multiply the result by:1.0
+    Raise the power of result by:1.0
+    Add to the result:0.0
+    How should the output value be rounded?:Not rounded
+    Enter how many decimal places the value should be rounded to:0
+    Constrain the result to a lower bound?:No
+    Enter the lower bound:0.0
+    Constrain the result to an upper bound?:No
+    Enter the upper bound:1.0
+
+CalculateMath:[module_num:36|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Name the output measurement:MinusBackgroundMTDR
+    Operation:Subtract
+    Select the minuend measurement type:Object
+    Select the minuend objects:LiveCells
+    Select the minuend measurement:Intensity_MeanIntensity_MTDR
+    Multiply the above operand by:1.0
+    Raise the power of above operand by:1.0
+    Select the subtrahend measurement type:Object
+    Select the subtrahend objects:Background
+    Select the subtrahend measurement:Intensity_MeanIntensity_MTDR
+    Multiply the above operand by:1.0
+    Raise the power of above operand by:1.0
+    Take log10 of result?:No
+    Multiply the result by:1.0
+    Raise the power of result by:1.0
+    Add to the result:0.0
+    How should the output value be rounded?:Not rounded
+    Enter how many decimal places the value should be rounded to:0
+    Constrain the result to a lower bound?:No
+    Enter the lower bound:0.0
+    Constrain the result to an upper bound?:No
+    Enter the upper bound:1.0
+
+CalculateMath:[module_num:37|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Name the output measurement:MTDR_Div_MVG
+    Operation:Divide
+    Select the numerator measurement type:Object
+    Select the numerator objects:LiveCells
+    Select the numerator measurement:Math_MinusBackgroundMTDR
+    Multiply the above operand by:1.0
+    Raise the power of above operand by:1.0
+    Select the denominator measurement type:Object
+    Select the denominator objects:ContractedFiltered
+    Select the denominator measurement:Math_MinusBackgroundMVG
+    Multiply the above operand by:1.0
+    Raise the power of above operand by:1.0
+    Take log10 of result?:No
+    Multiply the result by:1.0
+    Raise the power of result by:1.0
+    Add to the result:0.0
+    How should the output value be rounded?:Not rounded
+    Enter how many decimal places the value should be rounded to:0
+    Constrain the result to a lower bound?:No
+    Enter the lower bound:0.0
+    Constrain the result to an upper bound?:No
+    Enter the upper bound:1.0
+
+CalculateMath:[module_num:38|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Name the output measurement:MTDR_Div_MVG_noback
+    Operation:Divide
+    Select the numerator measurement type:Object
+    Select the numerator objects:LiveCells
+    Select the numerator measurement:Intensity_MeanIntensity_MTDR
+    Multiply the above operand by:1.0
+    Raise the power of above operand by:1.0
+    Select the denominator measurement type:Object
+    Select the denominator objects:LiveCells
+    Select the denominator measurement:Intensity_MeanIntensity_MVGreen
+    Multiply the above operand by:1.0
+    Raise the power of above operand by:1.0
+    Take log10 of result?:No
+    Multiply the result by:1.0
+    Raise the power of result by:1.0
+    Add to the result:0.0
+    How should the output value be rounded?:Not rounded
+    Enter how many decimal places the value should be rounded to:0
+    Constrain the result to a lower bound?:No
+    Enter the lower bound:0.0
+    Constrain the result to an upper bound?:No
+    Enter the upper bound:1.0
+
+ExportToSpreadsheet:[module_num:39|svn_version:'Unknown'|variable_revision_number:13|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the column delimiter:Comma (",")
+    Add image metadata columns to your object data file?:Yes
+    Add image file and folder names to your object data file?:Yes
+    Select the measurements to export:Yes
+    Calculate the per-image mean values for object measurements?:Yes
+    Calculate the per-image median values for object measurements?:Yes
+    Calculate the per-image standard deviation values for object measurements?:Yes
+    Output file location:Default Output Folder|
+    Create a GenePattern GCT file?:No
+    Select source of sample row name:Metadata
+    Select the image to use as the identifier:None
+    Select the metadata to use as the identifier:None
+    Export all measurement types?:Yes
+    Press button to select measurements:ExpandedFiltered|Children_Background_Count,ExpandedFiltered|Number_Object_Number,ExpandedFiltered|Location_Center_X,ExpandedFiltered|Location_Center_Y,ContractedFiltered|Intensity_IntegratedIntensity_MVGreen,ContractedFiltered|Intensity_IntegratedIntensity_MTDR,ContractedFiltered|Intensity_IntegratedIntensityEdge_MVGreen,ContractedFiltered|Intensity_IntegratedIntensityEdge_MTDR,ContractedFiltered|Intensity_MinIntensity_MVGreen,ContractedFiltered|Intensity_MinIntensity_MTDR,ContractedFiltered|Intensity_MaxIntensityEdge_MTDR,ContractedFiltered|Intensity_MaxIntensityEdge_MVGreen,ContractedFiltered|Intensity_StdIntensityEdge_MTDR,ContractedFiltered|Intensity_StdIntensityEdge_MVGreen,ContractedFiltered|Intensity_MinIntensityEdge_MTDR,ContractedFiltered|Intensity_MinIntensityEdge_MVGreen,ContractedFiltered|Intensity_MADIntensity_MTDR,ContractedFiltered|Intensity_MADIntensity_MVGreen,ContractedFiltered|Intensity_MassDisplacement_MTDR,ContractedFiltered|Intensity_MassDisplacement_MVGreen,ContractedFiltered|Intensity_UpperQuartileIntensity_MTDR,ContractedFiltered|Intensity_UpperQuartileIntensity_MVGreen,ContractedFiltered|Intensity_MaxIntensity_MVGreen,ContractedFiltered|Intensity_MaxIntensity_MTDR,ContractedFiltered|Intensity_MeanIntensityEdge_MTDR,ContractedFiltered|Intensity_MeanIntensityEdge_MVGreen,ContractedFiltered|Intensity_StdIntensity_MTDR,ContractedFiltered|Intensity_StdIntensity_MVGreen,ContractedFiltered|Intensity_LowerQuartileIntensity_MTDR,ContractedFiltered|Intensity_LowerQuartileIntensity_MVGreen,ContractedFiltered|Intensity_MedianIntensity_MTDR,ContractedFiltered|Intensity_MedianIntensity_MVGreen,ContractedFiltered|Intensity_MeanIntensity_MTDR,ContractedFiltered|Intensity_MeanIntensity_MVGreen,ContractedFiltered|Location_CenterMassIntensity_Z_MVGreen,ContractedFiltered|Location_CenterMassIntensity_Z_MTDR,ContractedFiltered|Location_CenterMassIntensity_Y_MVGreen,ContractedFiltered|Location_CenterMassIntensity_Y_MTDR,ContractedFiltered|Location_CenterMassIntensity_X_MVGreen,ContractedFiltered|Location_CenterMassIntensity_X_MTDR,ContractedFiltered|Location_MaxIntensity_Y_MTDR,ContractedFiltered|Location_MaxIntensity_Y_MVGreen,ContractedFiltered|Location_MaxIntensity_X_MTDR,ContractedFiltered|Location_MaxIntensity_X_MVGreen,ContractedFiltered|Location_MaxIntensity_Z_MTDR,ContractedFiltered|Location_MaxIntensity_Z_MVGreen,ContractedFiltered|Location_Center_Y,ContractedFiltered|Location_Center_X,ContractedFiltered|Number_Object_Number,ContractedFiltered|Math_MinusBackgroundMVG,ContractedFiltered|Math_MTDR_Div_MVG,IdentifySecondaryObjects|Location_Center_Y,IdentifySecondaryObjects|Location_Center_X,IdentifySecondaryObjects|Location_Center_Z,IdentifySecondaryObjects|Children_Background_Count,IdentifySecondaryObjects|Number_Object_Number,IdentifySecondaryObjects|Parent_LiveCells,Image|Scaling_MTDR,Image|Scaling_Trans,Image|Scaling_MVGreen,Image|ModuleError_19MaskObjects,Image|ModuleError_16MeasureObjectSizeShape,Image|ModuleError_35CalculateMath,Image|ModuleError_06RescaleIntensity,Image|ModuleError_30SaveImages,Image|ModuleError_09FilterObjects,Image|ModuleError_20ExpandOrShrinkObjects,Image|ModuleError_10GaussianFilter,Image|ModuleError_14IdentifyPrimaryObjects,Image|ModuleError_33SaveImages,Image|ModuleError_11GaussianFilter,Image|ModuleError_25OverlayOutlines,Image|ModuleError_31SaveImages,Image|ModuleError_34MeasureObjectIntensity,Image|ModuleError_24OverlayOutlines,Image|ModuleError_07IdentifyPrimaryObjects,Image|ModuleError_12CorrectIlluminationApply,Image|ModuleError_18FilterObjects,Image|ModuleError_21ExpandOrShrinkObjects,Image|ModuleError_04Groups,Image|ModuleError_38CalculateMath,Image|ModuleError_17MeasureObjectIntensity,Image|ModuleError_27OverlayOutlines,Image|ModuleError_37CalculateMath,Image|ModuleError_05RescaleIntensity,Image|ModuleError_15MeasureObjectNeighbors,Image|ModuleError_36CalculateMath,Image|ModuleError_01Images,Image|ModuleError_08MeasureObjectSizeShape,Image|ModuleError_32SaveImages,Image|ModuleError_13RescaleIntensity,Image|ModuleError_28OverlayOutlines,Image|ModuleError_23IdentifyTertiaryObjects,Image|ModuleError_03NamesAndTypes,Image|ModuleError_26OverlayOutlines,Image|ModuleError_22IdentifySecondaryObjects,Image|ModuleError_29SaveImages,Image|ModuleError_02Metadata,Image|ExecutionTime_06RescaleIntensity,Image|ExecutionTime_37CalculateMath,Image|ExecutionTime_08MeasureObjectSizeShape,Image|ExecutionTime_25OverlayOutlines,Image|ExecutionTime_19MaskObjects,Image|ExecutionTime_12CorrectIlluminationApply,Image|ExecutionTime_18FilterObjects,Image|ExecutionTime_11GaussianFilter,Image|ExecutionTime_23IdentifyTertiaryObjects,Image|ExecutionTime_14IdentifyPrimaryObjects,Image|ExecutionTime_27OverlayOutlines,Image|ExecutionTime_21ExpandOrShrinkObjects,Image|ExecutionTime_10GaussianFilter,Image|ExecutionTime_24OverlayOutlines,Image|ExecutionTime_28OverlayOutlines,Image|ExecutionTime_29SaveImages,Image|ExecutionTime_01Images,Image|ExecutionTime_17MeasureObjectIntensity,Image|ExecutionTime_33SaveImages,Image|ExecutionTime_22IdentifySecondaryObjects,Image|ExecutionTime_07IdentifyPrimaryObjects,Image|ExecutionTime_03NamesAndTypes,Image|ExecutionTime_38CalculateMath,Image|ExecutionTime_26OverlayOutlines,Image|ExecutionTime_16MeasureObjectSizeShape,Image|ExecutionTime_04Groups,Image|ExecutionTime_05RescaleIntensity,Image|ExecutionTime_09FilterObjects,Image|ExecutionTime_15MeasureObjectNeighbors,Image|ExecutionTime_32SaveImages,Image|ExecutionTime_36CalculateMath,Image|ExecutionTime_13RescaleIntensity,Image|ExecutionTime_31SaveImages,Image|ExecutionTime_35CalculateMath,Image|ExecutionTime_34MeasureObjectIntensity,Image|ExecutionTime_20ExpandOrShrinkObjects,Image|ExecutionTime_30SaveImages,Image|ExecutionTime_02Metadata,Image|Group_Length,Image|Group_Number,Image|Group_Index,Image|Threshold_GuideThreshold_IdentifyPrimaryObjectsLIVE,Image|Threshold_OrigThreshold_IdentifyPrimaryObjectsMTDR,Image|Threshold_OrigThreshold_IdentifyPrimaryObjectsLIVE,Image|Threshold_WeightedVariance_IdentifyPrimaryObjectsMTDR,Image|Threshold_WeightedVariance_IdentifyPrimaryObjectsLIVE,Image|Threshold_SumOfEntropies_IdentifyPrimaryObjectsMTDR,Image|Threshold_SumOfEntropies_IdentifyPrimaryObjectsLIVE,Image|Threshold_FinalThreshold_IdentifyPrimaryObjectsMTDR,Image|Threshold_FinalThreshold_IdentifyPrimaryObjectsLIVE,Image|Frame_MTDR,Image|Frame_MVGreen,Image|Frame_Trans,Image|Count_ContractedFiltered,Image|Count_LiveCells,Image|Count_IdentifyPrimaryObjectsLIVE,Image|Count_RemovedObjects2,Image|Count_FilterObjectsLIVE,Image|Count_Background,Image|Count_FilterObjectsMTDR,Image|Count_ExpandedFiltered,Image|Count_IdentifySecondaryObjects,Image|Count_IdentifyPrimaryObjectsMTDR,Image|FileName_MTDR,Image|FileName_Trans,Image|FileName_MVGreen,Image|Metadata_ChannelNumber,Image|Metadata_FileLocation,Image|Metadata_Series,Image|Metadata_Frame,Image|Metadata_Site,Image|Metadata_Well,Image|MD5Digest_MTDR,Image|MD5Digest_Trans,Image|MD5Digest_MVGreen,Image|Width_Trans,Image|Width_MTDR,Image|Width_MVGreen,Image|Height_MVGreen,Image|Height_Trans,Image|Height_MTDR,Image|PathName_Trans,Image|PathName_MTDR,Image|PathName_MVGreen,Image|URL_MVGreen,Image|URL_Trans,Image|URL_MTDR,Image|Series_Trans,Image|Series_MVGreen,Image|Series_MTDR,LiveCells|Intensity_IntegratedIntensityEdge_MVGreen,LiveCells|Intensity_IntegratedIntensityEdge_MTDR,LiveCells|Intensity_MassDisplacement_MTDR,LiveCells|Intensity_MassDisplacement_MVGreen,LiveCells|Intensity_MADIntensity_MVGreen,LiveCells|Intensity_MADIntensity_MTDR,LiveCells|Intensity_MeanIntensity_MTDR,LiveCells|Intensity_MeanIntensity_MVGreen,LiveCells|Intensity_StdIntensity_MTDR,LiveCells|Intensity_StdIntensity_MVGreen,LiveCells|Intensity_LowerQuartileIntensity_MVGreen,LiveCells|Intensity_LowerQuartileIntensity_MTDR,LiveCells|Intensity_MaxIntensityEdge_MTDR,LiveCells|Intensity_MaxIntensityEdge_MVGreen,LiveCells|Intensity_MinIntensityEdge_MVGreen,LiveCells|Intensity_MinIntensityEdge_MTDR,LiveCells|Intensity_MeanIntensityEdge_MTDR,LiveCells|Intensity_MeanIntensityEdge_MVGreen,LiveCells|Intensity_MinIntensity_MVGreen,LiveCells|Intensity_MinIntensity_MTDR,LiveCells|Intensity_UpperQuartileIntensity_MVGreen,LiveCells|Intensity_UpperQuartileIntensity_MTDR,LiveCells|Intensity_MedianIntensity_MTDR,LiveCells|Intensity_MedianIntensity_MVGreen,LiveCells|Intensity_MaxIntensity_MTDR,LiveCells|Intensity_MaxIntensity_MVGreen,LiveCells|Intensity_IntegratedIntensity_MTDR,LiveCells|Intensity_IntegratedIntensity_MVGreen,LiveCells|Intensity_StdIntensityEdge_MVGreen,LiveCells|Intensity_StdIntensityEdge_MTDR,LiveCells|Math_MTDR_Div_MVG,LiveCells|Math_MTDR_Div_MVG_noback,LiveCells|Math_MinusBackgroundMTDR,LiveCells|Children_IdentifySecondaryObjects_Count,LiveCells|Location_MaxIntensity_Y_MTDR,LiveCells|Location_MaxIntensity_Y_MVGreen,LiveCells|Location_MaxIntensity_X_MVGreen,LiveCells|Location_MaxIntensity_X_MTDR,LiveCells|Location_MaxIntensity_Z_MVGreen,LiveCells|Location_MaxIntensity_Z_MTDR,LiveCells|Location_CenterMassIntensity_Z_MVGreen,LiveCells|Location_CenterMassIntensity_Z_MTDR,LiveCells|Location_CenterMassIntensity_X_MTDR,LiveCells|Location_CenterMassIntensity_X_MVGreen,LiveCells|Location_CenterMassIntensity_Y_MTDR,LiveCells|Location_CenterMassIntensity_Y_MVGreen,LiveCells|Location_Center_Y,LiveCells|Location_Center_X,LiveCells|Number_Object_Number,LiveCells|Parent_FilterObjectsMTDR,RemovedObjects2|Location_Center_Z,RemovedObjects2|Location_Center_X,RemovedObjects2|Location_Center_Y,RemovedObjects2|Number_Object_Number,RemovedObjects2|Parent_IdentifyPrimaryObjectsMTDR,IdentifyPrimaryObjectsMTDR|Intensity_MinIntensityEdge_MTDR,IdentifyPrimaryObjectsMTDR|Intensity_MaxIntensityEdge_MTDR,IdentifyPrimaryObjectsMTDR|Intensity_IntegratedIntensity_MTDR,IdentifyPrimaryObjectsMTDR|Intensity_StdIntensityEdge_MTDR,IdentifyPrimaryObjectsMTDR|Intensity_MinIntensity_MTDR,IdentifyPrimaryObjectsMTDR|Intensity_MeanIntensity_MTDR,IdentifyPrimaryObjectsMTDR|Intensity_MassDisplacement_MTDR,IdentifyPrimaryObjectsMTDR|Intensity_LowerQuartileIntensity_MTDR,IdentifyPrimaryObjectsMTDR|Intensity_MedianIntensity_MTDR,IdentifyPrimaryObjectsMTDR|Intensity_UpperQuartileIntensity_MTDR,IdentifyPrimaryObjectsMTDR|Intensity_MeanIntensityEdge_MTDR,IdentifyPrimaryObjectsMTDR|Intensity_StdIntensity_MTDR,IdentifyPrimaryObjectsMTDR|Intensity_MaxIntensity_MTDR,IdentifyPrimaryObjectsMTDR|Intensity_MADIntensity_MTDR,IdentifyPrimaryObjectsMTDR|Intensity_IntegratedIntensityEdge_MTDR,IdentifyPrimaryObjectsMTDR|AreaShape_MinorAxisLength,IdentifyPrimaryObjectsMTDR|AreaShape_MajorAxisLength,IdentifyPrimaryObjectsMTDR|AreaShape_EquivalentDiameter,IdentifyPrimaryObjectsMTDR|AreaShape_BoundingBoxArea,IdentifyPrimaryObjectsMTDR|AreaShape_Extent,IdentifyPrimaryObjectsMTDR|AreaShape_MaximumRadius,IdentifyPrimaryObjectsMTDR|AreaShape_Perimeter,IdentifyPrimaryObjectsMTDR|AreaShape_MinFeretDiameter,IdentifyPrimaryObjectsMTDR|AreaShape_Center_X,IdentifyPrimaryObjectsMTDR|AreaShape_Center_Y,IdentifyPrimaryObjectsMTDR|AreaShape_MedianRadius,IdentifyPrimaryObjectsMTDR|AreaShape_Orientation,IdentifyPrimaryObjectsMTDR|AreaShape_BoundingBoxMinimum_Y,IdentifyPrimaryObjectsMTDR|AreaShape_BoundingBoxMinimum_X,IdentifyPrimaryObjectsMTDR|AreaShape_BoundingBoxMaximum_Y,IdentifyPrimaryObjectsMTDR|AreaShape_BoundingBoxMaximum_X,IdentifyPrimaryObjectsMTDR|AreaShape_Eccentricity,IdentifyPrimaryObjectsMTDR|AreaShape_MaxFeretDiameter,IdentifyPrimaryObjectsMTDR|AreaShape_EulerNumber,IdentifyPrimaryObjectsMTDR|AreaShape_Compactness,IdentifyPrimaryObjectsMTDR|AreaShape_FormFactor,IdentifyPrimaryObjectsMTDR|AreaShape_Solidity,IdentifyPrimaryObjectsMTDR|AreaShape_ConvexArea,IdentifyPrimaryObjectsMTDR|AreaShape_MeanRadius,IdentifyPrimaryObjectsMTDR|AreaShape_Area,IdentifyPrimaryObjectsMTDR|Location_Center_Y,IdentifyPrimaryObjectsMTDR|Location_Center_X,IdentifyPrimaryObjectsMTDR|Location_Center_Z,IdentifyPrimaryObjectsMTDR|Location_MaxIntensity_Z_MTDR,IdentifyPrimaryObjectsMTDR|Location_MaxIntensity_Y_MTDR,IdentifyPrimaryObjectsMTDR|Location_MaxIntensity_X_MTDR,IdentifyPrimaryObjectsMTDR|Location_CenterMassIntensity_X_MTDR,IdentifyPrimaryObjectsMTDR|Location_CenterMassIntensity_Z_MTDR,IdentifyPrimaryObjectsMTDR|Location_CenterMassIntensity_Y_MTDR,IdentifyPrimaryObjectsMTDR|Neighbors_SecondClosestDistance_22,IdentifyPrimaryObjectsMTDR|Neighbors_FirstClosestDistance_22,IdentifyPrimaryObjectsMTDR|Neighbors_NumberOfNeighbors_22,IdentifyPrimaryObjectsMTDR|Neighbors_PercentTouching_22,IdentifyPrimaryObjectsMTDR|Neighbors_FirstClosestObjectNumber_22,IdentifyPrimaryObjectsMTDR|Neighbors_AngleBetweenNeighbors_22,IdentifyPrimaryObjectsMTDR|Neighbors_SecondClosestObjectNumber_22,IdentifyPrimaryObjectsMTDR|Children_RemovedObjects2_Count,IdentifyPrimaryObjectsMTDR|Children_FilterObjectsMTDR_Count,IdentifyPrimaryObjectsMTDR|Number_Object_Number,Background|Location_CenterMassIntensity_Z_MTDR,Background|Location_CenterMassIntensity_Z_MVGreen,Background|Location_CenterMassIntensity_Y_MVGreen,Background|Location_CenterMassIntensity_Y_MTDR,Background|Location_CenterMassIntensity_X_MVGreen,Background|Location_CenterMassIntensity_X_MTDR,Background|Location_Center_Y,Background|Location_Center_X,Background|Location_MaxIntensity_Y_MVGreen,Background|Location_MaxIntensity_Y_MTDR,Background|Location_MaxIntensity_Z_MVGreen,Background|Location_MaxIntensity_Z_MTDR,Background|Location_MaxIntensity_X_MTDR,Background|Location_MaxIntensity_X_MVGreen,Background|Intensity_MeanIntensity_MTDR,Background|Intensity_MeanIntensity_MVGreen,Background|Intensity_IntegratedIntensity_MTDR,Background|Intensity_IntegratedIntensity_MVGreen,Background|Intensity_MeanIntensityEdge_MVGreen,Background|Intensity_MeanIntensityEdge_MTDR,Background|Intensity_MADIntensity_MVGreen,Background|Intensity_MADIntensity_MTDR,Background|Intensity_MedianIntensity_MVGreen,Background|Intensity_MedianIntensity_MTDR,Background|Intensity_LowerQuartileIntensity_MTDR,Background|Intensity_LowerQuartileIntensity_MVGreen,Background|Intensity_MaxIntensityEdge_MTDR,Background|Intensity_MaxIntensityEdge_MVGreen,Background|Intensity_UpperQuartileIntensity_MTDR,Background|Intensity_UpperQuartileIntensity_MVGreen,Background|Intensity_IntegratedIntensityEdge_MTDR,Background|Intensity_IntegratedIntensityEdge_MVGreen,Background|Intensity_StdIntensity_MTDR,Background|Intensity_StdIntensity_MVGreen,Background|Intensity_StdIntensityEdge_MTDR,Background|Intensity_StdIntensityEdge_MVGreen,Background|Intensity_MassDisplacement_MVGreen,Background|Intensity_MassDisplacement_MTDR,Background|Intensity_MinIntensity_MVGreen,Background|Intensity_MinIntensity_MTDR,Background|Intensity_MaxIntensity_MTDR,Background|Intensity_MaxIntensity_MVGreen,Background|Intensity_MinIntensityEdge_MTDR,Background|Intensity_MinIntensityEdge_MVGreen,Background|Parent_ExpandedFiltered,Background|Parent_IdentifySecondaryObjects,Background|Math_MinusBackgroundMVG,Background|Math_MinusBackgroundMTDR,Background|Number_Object_Number,IdentifyPrimaryObjectsLIVE|AreaShape_BoundingBoxMaximum_Y,IdentifyPrimaryObjectsLIVE|AreaShape_BoundingBoxMaximum_X,IdentifyPrimaryObjectsLIVE|AreaShape_Extent,IdentifyPrimaryObjectsLIVE|AreaShape_MajorAxisLength,IdentifyPrimaryObjectsLIVE|AreaShape_MaxFeretDiameter,IdentifyPrimaryObjectsLIVE|AreaShape_Area,IdentifyPrimaryObjectsLIVE|AreaShape_ConvexArea,IdentifyPrimaryObjectsLIVE|AreaShape_Solidity,IdentifyPrimaryObjectsLIVE|AreaShape_Orientation,IdentifyPrimaryObjectsLIVE|AreaShape_Center_Y,IdentifyPrimaryObjectsLIVE|AreaShape_Center_X,IdentifyPrimaryObjectsLIVE|AreaShape_Perimeter,IdentifyPrimaryObjectsLIVE|AreaShape_BoundingBoxMinimum_Y,IdentifyPrimaryObjectsLIVE|AreaShape_BoundingBoxMinimum_X,IdentifyPrimaryObjectsLIVE|AreaShape_Eccentricity,IdentifyPrimaryObjectsLIVE|AreaShape_FormFactor,IdentifyPrimaryObjectsLIVE|AreaShape_MinFeretDiameter,IdentifyPrimaryObjectsLIVE|AreaShape_EquivalentDiameter,IdentifyPrimaryObjectsLIVE|AreaShape_MedianRadius,IdentifyPrimaryObjectsLIVE|AreaShape_EulerNumber,IdentifyPrimaryObjectsLIVE|AreaShape_MaximumRadius,IdentifyPrimaryObjectsLIVE|AreaShape_Compactness,IdentifyPrimaryObjectsLIVE|AreaShape_MeanRadius,IdentifyPrimaryObjectsLIVE|AreaShape_BoundingBoxArea,IdentifyPrimaryObjectsLIVE|AreaShape_MinorAxisLength,IdentifyPrimaryObjectsLIVE|Location_Center_Y,IdentifyPrimaryObjectsLIVE|Location_Center_X,IdentifyPrimaryObjectsLIVE|Location_Center_Z,IdentifyPrimaryObjectsLIVE|Number_Object_Number,IdentifyPrimaryObjectsLIVE|Children_FilterObjectsLIVE_Count,FilterObjectsMTDR|Children_LiveCells_Count,FilterObjectsMTDR|Number_Object_Number,FilterObjectsMTDR|Location_Center_Z,FilterObjectsMTDR|Location_Center_X,FilterObjectsMTDR|Location_Center_Y,FilterObjectsMTDR|Parent_IdentifyPrimaryObjectsMTDR,FilterObjectsLIVE|Location_Center_Z,FilterObjectsLIVE|Location_Center_X,FilterObjectsLIVE|Location_Center_Y,FilterObjectsLIVE|Parent_IdentifyPrimaryObjectsLIVE,FilterObjectsLIVE|Number_Object_Number,Experiment|Modification_Timestamp,Experiment|Pipeline_Pipeline,Experiment|Run_Timestamp,Experiment|CellProfiler_Version
+    Representation of Nan/Inf:NaN
+    Add a prefix to file names?:Yes
+    Filename prefix:MyExpt_
+    Overwrite existing files without warning?:No
+    Data to export:Do not use
+    Combine these object measurements with those of the previous object?:No
+    File name:DATA.csv
+    Use the object name for the file name?:Yes
